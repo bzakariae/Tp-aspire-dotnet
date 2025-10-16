@@ -10,3 +10,4 @@ C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetAp
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.ServiceDefaults\obj\Debug\net9.0\refint\MyDotNetApp.ServiceDefaults.dll
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.ServiceDefaults\obj\Debug\net9.0\MyDotNetApp.ServiceDefaults.pdb
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.ServiceDefaults\obj\Debug\net9.0\ref\MyDotNetApp.ServiceDefaults.dll
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.ServiceDefaults\obj\Debug\net9.0\MyDotNetApp.ServiceDefaults.sourcelink.json

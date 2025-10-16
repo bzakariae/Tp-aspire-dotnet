@@ -58,9 +58,21 @@
               "version": "[9.5.1, )",
               "autoReferenced": true
             },
+            "Aspire.Hosting.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
             "Aspire.Hosting.SqlServer": {
               "target": "Package",
               "version": "[9.5.1, )"
+            },
+            "Aspire.Npgsql": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.3, )"
             }
           },
           "imports": [

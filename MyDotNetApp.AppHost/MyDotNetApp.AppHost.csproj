@@ -12,8 +12,11 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.1" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.1" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.1" />
-    <ProjetReference Include="../MyDotNetApp.ApiService/MyDotNetApp.ApiService.csproj"/>
+    <PackageReference Include="Aspire.Npgsql" Version="9.5.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+    <ProjetReference Include="../MyDotNetApp.ApiService/MyDotNetApp.ApiService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
