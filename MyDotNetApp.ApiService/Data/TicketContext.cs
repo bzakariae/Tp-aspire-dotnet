@@ -1,20 +1,17 @@
-namespace MyDotNetApp.ApiService.Data;
 using Microsoft.EntityFrameworkCore;
-using MyDotNetApp.ApiService.Models;
 
-public class TicketContext : DbContext
+namespace MyDotNetApp.ApiService.Data
 {
-    public TicketContext(DbContextOptions<TicketContext> options) : base(options) { }
-
-    public DbSet<Ticket> Tickets { get; set; } = null!;
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class Ticket
     {
-        base.OnModelCreating(modelBuilder);
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public bool Done { get; set; }
+    }
 
-        // Seed data
-        modelBuilder.Entity<Ticket>().HasData(
-            new Ticket { Id = 1, Title = "Test Ticket 1", Description = "This is a test ticket" }
-        );
+    public class TicketContext : DbContext
+    {
+        public TicketContext(DbContextOptions<TicketContext> options) : base(options) {}
+        public DbSet<Ticket> Tickets => Set<Ticket>();
     }
 }

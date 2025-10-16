@@ -6,7 +6,7 @@ using  Microsoft.EntityFrameworkCore.SqlServer ;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TicketContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("mydotnetdb")));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("AppDb")));
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

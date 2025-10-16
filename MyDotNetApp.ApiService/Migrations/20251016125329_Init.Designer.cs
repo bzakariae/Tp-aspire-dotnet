@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyDotNetApp.ApiService.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20251015132944_InitialSeed")]
-    partial class InitialSeed
+    [Migration("20251016125329_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace MyDotNetApp.ApiService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MyDotNetApp.ApiService.Models.Ticket", b =>
+            modelBuilder.Entity("MyDotNetApp.ApiService.Data.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,9 +32,8 @@ namespace MyDotNetApp.ApiService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("Done")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -43,14 +42,6 @@ namespace MyDotNetApp.ApiService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tickets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "This is a test ticket",
-                            Title = "Test Ticket 1"
-                        });
                 });
 #pragma warning restore 612, 618
         }
