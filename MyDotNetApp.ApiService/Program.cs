@@ -1,53 +1,55 @@
 using Microsoft.EntityFrameworkCore;
 using MyDotNetApp.ApiService.Data;
-using  Microsoft.EntityFrameworkCore.SqlServer ;
-
-
+using Npgsql; // pour typer l’exception si tu veux
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 1) Connexion + résilience EF Core
 builder.Services.AddDbContext<TicketContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("AppDb")));
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+    opt.UseNpgsql(
+        builder.Configuration.GetConnectionString("mydotnetdb")!, 
+        npgsql => npgsql.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(5),
+            errorCodesToAdd: null)));
+
 builder.Services.AddOpenApi();
 builder.AddServiceDefaults();
 
-
 var app = builder.Build();
-// Appliquer migrations si besoin
 
+// 2) Appliquer migrations avec retries
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TicketContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>()
+        .CreateLogger("Startup");
 
+    const int maxAttempts = 10;
+    for (int attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        try
+        {
+            logger.LogInformation("Applying migrations (attempt {Attempt}/{Max})…", attempt, maxAttempts);
+            db.Database.Migrate();
+            logger.LogInformation("Migrations applied.");
+            break;
+        }
+        catch (Exception ex) when (attempt < maxAttempts)
+        {
+            logger.LogWarning(ex, "DB not ready yet. Retrying in 3s (attempt {Attempt}/{Max})…", attempt, maxAttempts);
+            await Task.Delay(TimeSpan.FromSeconds(3));
+        }
+    }
+}
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 app.MapGet("/", () => "OK");
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-app.MapGet("/api/todo", () => new[] { "Tâche 1", "Tâche 2" });
-app.Run();
+// (optionnel) endpoint de test DB
+app.MapGet("/tickets", async (TicketContext db) => await db.Tickets.AsNoTracking().ToListAsync());
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.Run();
