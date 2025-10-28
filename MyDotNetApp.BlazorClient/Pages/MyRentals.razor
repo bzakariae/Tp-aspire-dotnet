@@ -1,0 +1,65 @@
+@page "/myrentals"
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h2>Mes locations</h2>
+
+@if (rentals == null)
+{
+    <p>Chargement...</p>
+}
+else if (!rentals.Any())
+{
+    <p>Aucune location trouvée.</p>
+}
+else
+{
+    <div class="rental-list">
+        @foreach (var r in rentals)
+        {
+            <div class="rental-card">
+                <h4>@r.Car.Make @r.Car.Model</h4>
+                <p>Du @r.StartDate au @r.EndDate</p>
+                <p><strong>@r.TotalPrice €</strong></p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Rental>? rentals;
+    private string username = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        username = await localStorage.GetItemAsync<string>("username");
+        if (string.IsNullOrEmpty(username)) return;
+
+        rentals = await Http.GetFromJsonAsync<List<Rental>>($"http://localhost:5222/renter/myrentals?renterName={username}");
+    }
+
+    public class Rental
+    {
+        public int Id { get; set; }
+        public Car Car { get; set; } = new();
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
+        public decimal TotalPrice { get; set; }
+    }
+
+    public class Car
+    {
+        public string Make { get; set; } = "";
+        public string Model { get; set; } = "";
+    }
+}
+
+<style>
+.rental-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+</style>

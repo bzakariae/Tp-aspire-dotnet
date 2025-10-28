@@ -1,55 +1,77 @@
 using Microsoft.EntityFrameworkCore;
-using MyDotNetApp.ApiService.Data;
-using Npgsql; // pour typer l’exception si tu veux
+using LuxuryRental.Api.Data;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1) Connexion + résilience EF Core
-builder.Services.AddDbContext<TicketContext>(opt =>
-    opt.UseNpgsql(
-        builder.Configuration.GetConnectionString("mydotnetdb")!, 
-        npgsql => npgsql.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(5),
-            errorCodesToAdd: null)));
-
-builder.Services.AddOpenApi();
+// Active les defaults fournis par MyDotNetApp.ServiceDefaults (health, discovery, OTEL, resilience)
 builder.AddServiceDefaults();
 
+// -------------------
+// 🔧 CONFIGURATION DU CORS (pour Blazor)
+// -------------------
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        // Ici, le frontend Blazor sera servi depuis le même domaine ou localhost
+        policy.AllowAnyOrigin() // ou mettre l'URL de ton client Blazor si besoin
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// -------------------
+// 🔧 CONFIGURATION DE LA BASE DE DONNÉES
+// -------------------
+var connection = builder.Configuration.GetConnectionString("AppDb");
+builder.Services.AddDbContext<RentalContext>(opt => opt.UseNpgsql(connection));
+
+// -------------------
+// 🚀 CONFIGURATION DES CONTROLLERS ET SWAGGER
+// -------------------
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "MyDotNetApp.ApiService",
+        Version = "v1",
+        Description = "API de gestion de location de voitures de luxe"
+    });
+});
+
+// -------------------
+// 🏗️ CONSTRUCTION DE L’APPLICATION
+// -------------------
 var app = builder.Build();
 
-// 2) Appliquer migrations avec retries
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<TicketContext>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>()
-        .CreateLogger("Startup");
+// Mappe les endpoints par défaut (health/alive) définis dans les extensions
+app.MapDefaultEndpoints();
 
-    const int maxAttempts = 10;
-    for (int attempt = 1; attempt <= maxAttempts; attempt++)
-    {
-        try
-        {
-            logger.LogInformation("Applying migrations (attempt {Attempt}/{Max})…", attempt, maxAttempts);
-            db.Database.Migrate();
-            logger.LogInformation("Migrations applied.");
-            break;
-        }
-        catch (Exception ex) when (attempt < maxAttempts)
-        {
-            logger.LogWarning(ex, "DB not ready yet. Retrying in 3s (attempt {Attempt}/{Max})…", attempt, maxAttempts);
-            await Task.Delay(TimeSpan.FromSeconds(3));
-        }
-    }
-}
+// -------------------
+// 🚪 MIDDLEWARES
+// -------------------
+app.UseCors("AllowBlazorClient"); // CORS pour Blazor
 
+// Swagger (uniquement en dev)
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyDotNetApp.ApiService v1"));
 }
 
-app.MapGet("/", () => "OK");
-// (optionnel) endpoint de test DB
-app.MapGet("/tickets", async (TicketContext db) => await db.Tickets.AsNoTracking().ToListAsync());
+app.UseRouting();
 
+// -------------------
+// ⚙️ MAPPE LES CONTROLLERS
+// -------------------
+app.MapControllers();
+
+// -------------------
+// 🏁 DÉMARRAGE
+// -------------------
 app.Run();

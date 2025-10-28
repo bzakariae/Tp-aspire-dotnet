@@ -1,0 +1,40 @@
+@page "/"
+@inject ApiService Api
+
+<h1>Available Cars</h1>
+
+@if (Cars == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var car in Cars)
+    {
+        <CarCard Car="car" OnRent="RentCar" />
+    }
+}
+
+@code {
+    private List<Car>? Cars;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cars = await Api.GetAvailableCars();
+    }
+
+    private async Task RentCar(int carId)
+    {
+        var rental = new RentalRequest
+        {
+            CarId = carId,
+            RenterName = "Demo User",
+            StartDate = DateOnly.FromDateTime(DateTime.Today),
+            EndDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1))
+        };
+
+        var success = await Api.RentCar(rental);
+        if (success) Cars = await Api.GetAvailableCars();
+    }
+}

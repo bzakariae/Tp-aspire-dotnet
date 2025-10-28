@@ -1,0 +1,99 @@
+@page "/admin/cars"
+@inject HttpClient Http
+
+<h2>Gestion des voitures</h2>
+
+<button @onclick="AddNewCar">➕ Ajouter une voiture</button>
+
+@if (cars == null)
+{
+    <p>Chargement...</p>
+}
+else
+{
+    <table class="car-table">
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Prix/Jour (€)</th>
+                <th>Disponible</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in cars)
+            {
+                <tr>
+                    <td>@car.Make</td>
+                    <td>@car.Model</td>
+                    <td>@car.PricePerDay</td>
+                    <td>@(car.IsAvailable ? "✅" : "❌")</td>
+                    <td>
+                        <button @onclick="() => EditCar(car.Id)">✏️</button>
+                        <button @onclick="() => DeleteCar(car.Id)">🗑️</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Car>? cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await Http.GetFromJsonAsync<List<Car>>("http://localhost:5222/admin/cars");
+    }
+
+    private async Task DeleteCar(int id)
+    {
+        await Http.DeleteAsync($"http://localhost:5222/admin/cars/{id}");
+        cars = cars!.Where(c => c.Id != id).ToList();
+    }
+
+    private void AddNewCar()
+    {
+        Navigation.NavigateTo("/admin/newcar");
+    }
+
+    private void EditCar(int id)
+    {
+        Navigation.NavigateTo($"/admin/edit/{id}");
+    }
+
+    [Inject] private NavigationManager? Navigation { get; set; }
+
+    public class Car
+    {
+        public int Id { get; set; }
+        public string Make { get; set; } = "";
+        public string Model { get; set; } = "";
+        public decimal PricePerDay { get; set; }
+        public bool IsAvailable { get; set; }
+    }
+}
+
+<style>
+.car-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+.car-table th, .car-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+.car-table th {
+    background-color: #f4f4f4;
+}
+button {
+    margin: 0 4px;
+    padding: 0.4rem 0.7rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>

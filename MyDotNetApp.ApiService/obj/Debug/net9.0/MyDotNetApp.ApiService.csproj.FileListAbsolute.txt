@@ -275,6 +275,9 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\OpenTele
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Polly.Core.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Polly.Extensions.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Polly.RateLimiting.dll
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\System.CodeDom.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\System.Composition.AttributedModel.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.ApiService\bin\Debug\net9.0\System.Composition.Convention.dll

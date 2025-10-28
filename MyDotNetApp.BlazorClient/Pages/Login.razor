@@ -1,0 +1,25 @@
+@page "/login"
+
+<h3>Connexion</h3>
+
+<div class="login-container">
+    <input @bind="username" placeholder="Votre nom" />
+    <button @onclick="HandleLogin">Se connecter</button>
+</div>
+
+@code {
+    private string username = "";
+
+    private void HandleLogin()
+    {
+        if (!string.IsNullOrWhiteSpace(username))
+        {
+            // Enregistrer l’utilisateur dans le localStorage
+            localStorage.SetItemAsync("username", username);
+            Navigation.NavigateTo("/rentals");
+        }
+    }
+
+    [Inject] private Blazored.LocalStorage.ILocalStorageService? localStorage { get; set; }
+    [Inject] private NavigationManager? Navigation { get; set; }
+}

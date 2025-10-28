@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDotNetApp.ServiceDefaults
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDotNetApp.ApiService", "MyDotNetApp.ApiService\MyDotNetApp.ApiService.csproj", "{D715FC77-B6BD-41B1-AED9-BE0EFBA603CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDotNetApp.BlazorClient", "MyDotNetApp.BlazorClient\MyDotNetApp.BlazorClient.csproj", "{0C72250D-7291-41E6-996B-8ACAD3920067}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{D715FC77-B6BD-41B1-AED9-BE0EFBA603CA}.Release|x64.Build.0 = Release|Any CPU
 		{D715FC77-B6BD-41B1-AED9-BE0EFBA603CA}.Release|x86.ActiveCfg = Release|Any CPU
 		{D715FC77-B6BD-41B1-AED9-BE0EFBA603CA}.Release|x86.Build.0 = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|x64.Build.0 = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Debug|x86.Build.0 = Debug|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|x64.ActiveCfg = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|x64.Build.0 = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|x86.ActiveCfg = Release|Any CPU
+		{0C72250D-7291-41E6-996B-8ACAD3920067}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
