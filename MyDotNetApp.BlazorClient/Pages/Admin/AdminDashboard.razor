@@ -1,0 +1,506 @@
+@page "/admin"
+@inject HttpClient Http
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@using MyDotNetApp.BlazorClient.Models
+@inject IJSRuntime JSRuntime
+
+<div class="admin-dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Tableau de bord Administrateur</h1>
+            <p class="subtitle">Gérez votre flotte de véhicules et les réservations</p>
+        </div>
+
+        @if (isLoading)
+        {
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
+        }
+        else
+        {
+            <div class="stats-grid">
+                <div class="stat-card card">
+                    <div class="stat-icon">🚗</div>
+                    <div class="stat-content">
+                        <div class="stat-value">@stats?.TotalCars</div>
+                        <div class="stat-label">Voitures totales</div>
+                    </div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-value">@stats?.AvailableCars</div>
+                        <div class="stat-label">Disponibles</div>
+                    </div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-content">
+                        <div class="stat-value">@stats?.TotalRentals</div>
+                        <div class="stat-label">Réservations</div>
+                    </div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-value">@stats?.TotalRevenue.ToString("C0")</div>
+                        <div class="stat-label">Revenus totaux</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2>Gestion des voitures</h2>
+                    <button class="btn btn-primary" @onclick="ShowAddCarModal">Ajouter une voiture</button>
+                </div>
+
+                <div class="cars-grid">
+                    @foreach (var car in cars)
+                    {
+                        <div class="car-card card">
+                            <img src="@car.ImageUrl" alt="@car.Make @car.Model" class="car-image" />
+                            <div class="car-content">
+                                <h3 class="car-title">@car.Make @car.Model</h3>
+                                <div class="car-details">
+                                    <span class="car-price">@car.PricePerDay.ToString("C0")/jour</span>
+                                    <span class="car-status @(car.IsAvailable ? "available" : "unavailable")">
+                                        @(car.IsAvailable ? "Disponible" : "Louée")
+                                    </span>
+                                </div>
+                                <div class="car-actions">
+                                    <button class="btn btn-secondary" @onclick="() => EditCar(car)">Modifier</button>
+                                    <button class="btn btn-danger" @onclick="() => DeleteCar(car.Id)">Supprimer</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Réservations récentes</h2>
+                <div class="rentals-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Voiture</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Prix total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rental in rentals)
+                            {
+                                <tr>
+                                    <td>@rental.RenterName</td>
+                                    <td>@rental.Car?.Make @rental.Car?.Model</td>
+                                    <td>@rental.StartDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@rental.EndDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@rental.TotalPrice.ToString("C0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (showCarModal)
+{
+    <div class="modal-overlay" @onclick="CloseCarModal">
+        <div class="modal-content card" @onclick:stopPropagation="true">
+            <h2>@(editingCar?.Id > 0 ? "Modifier" : "Ajouter") une voiture</h2>
+            <EditForm Model="@editingCar" OnValidSubmit="SaveCar">
+                <div class="form-group">
+                    <label class="form-label">Marque</label>
+                    <InputText class="form-input" @bind-Value="editingCar!.Make" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Modèle</label>
+                    <InputText class="form-input" @bind-Value="editingCar!.Model" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Classe</label>
+                    <InputText class="form-input" @bind-Value="editingCar!.Class" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Prix par jour</label>
+                    <InputNumber class="form-input" @bind-Value="editingCar!.PricePerDay" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL de l'image</label>
+                    <InputText class="form-input" @bind-Value="editingCar!.ImageUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <InputCheckbox @bind-Value="editingCar!.IsAvailable" />
+                        <span>Disponible</span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseCarModal">Annuler</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<style>
+    .admin-dashboard {
+        padding: 2rem 0;
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        color: var(--color-text-secondary);
+        font-size: 1.125rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--color-primary);
+    }
+
+    .stat-label {
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .section {
+        margin-bottom: 3rem;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .section h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+
+    .cars-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .car-card {
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .car-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .car-content {
+        padding: 1.5rem;
+    }
+
+    .car-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .car-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .car-price {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--color-primary);
+    }
+
+    .car-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .car-status.available {
+        background-color: rgba(16, 185, 129, 0.2);
+        color: var(--color-success);
+    }
+
+    .car-status.unavailable {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: var(--color-error);
+    }
+
+    .car-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-danger {
+        background-color: var(--color-error);
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+    }
+
+    .rentals-table {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--color-surface);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: var(--color-surface-elevated);
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+    }
+
+    tbody tr {
+        border-top: 1px solid var(--color-border);
+    }
+
+    tbody tr:hover {
+        background-color: var(--color-surface-elevated);
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+</style>
+
+@code {
+    private List<Car> cars = new();
+    private List<Rental> rentals = new();
+    private AdminStats? stats;
+    private bool isLoading = true;
+    private bool showCarModal = false;
+    private Car? editingCar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(" AdminDashboard: Checking authentication...");
+        var isAuth = await AuthService.IsAuthenticated();
+        var role = await AuthService.GetRole();
+
+        Console.WriteLine($" AdminDashboard: IsAuth={isAuth}, Role={role}");
+
+        if (!isAuth)
+        {
+            Console.WriteLine(" AdminDashboard: Not authenticated, redirecting to login");
+            Navigation.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        if (role != "Admin")
+        {
+            Console.WriteLine(" AdminDashboard: Not admin role, redirecting to login");
+            Navigation.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        Console.WriteLine(" AdminDashboard: Authentication OK, loading data...");
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        isLoading = true;
+        try
+        {
+            Console.WriteLine(" AdminDashboard: Fetching cars...");
+            cars = await Http.GetFromJsonAsync<List<Car>>("api/admin/cars") ?? new();
+            Console.WriteLine($" AdminDashboard: Loaded {cars.Count} cars");
+            
+            Console.WriteLine(" AdminDashboard: Fetching rentals...");
+            rentals = await Http.GetFromJsonAsync<List<Rental>>("api/admin/rentals") ?? new();
+            Console.WriteLine($" AdminDashboard: Loaded {rentals.Count} rentals");
+            
+            Console.WriteLine(" AdminDashboard: Fetching stats...");
+            stats = await Http.GetFromJsonAsync<AdminStats>("api/admin/rentals/stats");
+            Console.WriteLine($" AdminDashboard: Stats loaded");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($" AdminDashboard: Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void ShowAddCarModal()
+    {
+        editingCar = new Car { ImageUrl = "/placeholder.svg?height=300&width=400" };
+        showCarModal = true;
+    }
+
+    private void EditCar(Car car)
+    {
+        editingCar = new Car
+        {
+            Id = car.Id,
+            Make = car.Make,
+            Model = car.Model,
+            Class = car.Class,
+            PricePerDay = car.PricePerDay,
+            IsAvailable = car.IsAvailable,
+            ImageUrl = car.ImageUrl
+        };
+        showCarModal = true;
+    }
+
+    private void CloseCarModal()
+    {
+        showCarModal = false;
+        editingCar = null;
+    }
+
+    private async Task SaveCar()
+    {
+        if (editingCar == null) return;
+
+        try
+        {
+            if (editingCar.Id > 0)
+            {
+                await Http.PutAsJsonAsync($"api/admin/cars/{editingCar.Id}", editingCar);
+            }
+            else
+            {
+                await Http.PostAsJsonAsync("api/admin/cars", editingCar);
+            }
+
+            await LoadData();
+            CloseCarModal();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($" AdminDashboard: Error saving car: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteCar(int id)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir supprimer cette voiture ?"))
+            return;
+
+        try
+        {
+            await Http.DeleteAsync($"api/admin/cars/{id}");
+            await LoadData();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($" AdminDashboard: Error deleting car: {ex.Message}");
+        }
+    }
+
+    public class AdminStats
+    {
+        public int TotalRentals { get; set; }
+        public decimal TotalRevenue { get; set; }
+        public int AvailableCars { get; set; }
+        public int TotalCars { get; set; }
+    }
+}

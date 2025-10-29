@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LuxuryRental.Api.Models
 {
@@ -10,9 +8,13 @@ namespace LuxuryRental.Api.Models
 
         [Required]
         public int CarId { get; set; }
-
-        [ForeignKey(nameof(CarId))]
+        
         public Car? Car { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+        
+        public User? User { get; set; }
 
         [Required]
         public string RenterName { get; set; } = "";

@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LuxuryRental.Api.Data;
 using LuxuryRental.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDotNetApp.ApiService.Controllers.Admin
 {
     [ApiController]
-    [Route("admin/cars")]
-    // TODO: ajouter [Authorize(Roles = "Admin")] et configurer l'authentification
+    [Route("api/admin/cars")]
+    [Authorize(Roles = "Admin")]
     public class CarsController : ControllerBase
     {
         private readonly RentalContext _db;
@@ -40,6 +41,7 @@ namespace MyDotNetApp.ApiService.Controllers.Admin
             if (car == null) return NotFound();
             car.Make = updated.Make;
             car.Model = updated.Model;
+            car.Class = updated.Class;
             car.PricePerDay = updated.PricePerDay;
             car.IsAvailable = updated.IsAvailable;
             car.ImageUrl = updated.ImageUrl;

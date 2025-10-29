@@ -1,0 +1,449 @@
+@page "/renter"
+@inject HttpClient Http
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@using MyDotNetApp.BlazorClient.Models
+
+<div class="renter-dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1>Collection Prestige</h1>
+                <p class="subtitle">Découvrez notre sélection de véhicules d'exception</p>
+            </div>
+            <div class="header-actions">
+                <span class="user-greeting">Bonjour, @userName</span>
+                <button class="btn btn-secondary" @onclick="HandleLogout">Déconnexion</button>
+            </div>
+        </div>
+
+        @if (isLoading)
+        {
+            <div class="loading-container">
+                <div class="spinner-large"></div>
+                <p>Chargement...</p>
+            </div>
+        }
+        else
+        {
+            <div class="tabs">
+                <button class="tab @(activeTab == "cars" ? "active" : "")" @onclick='() => SwitchTab("cars")'>
+                    <span class="tab-icon">🚗</span>
+                    <span>Voitures disponibles</span>
+                    <span class="tab-badge">@availableCars.Count</span>
+                </button>
+                <button class="tab @(activeTab == "rentals" ? "active" : "")" @onclick='() => SwitchTab("rentals")'>
+                    <span class="tab-icon">📋</span>
+                    <span>Mes réservations</span>
+                    <span class="tab-badge">@myRentals.Count</span>
+                </button>
+            </div>
+
+            @if (activeTab == "cars")
+            {
+                <div class="cars-section">
+                    <div class="section-toolbar">
+                        <div class="search-box">
+                            <input type="text" class="search-input" placeholder="Rechercher une voiture..." @bind="searchQuery" @bind:event="oninput" />
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <select class="filter-select" @bind="filterClass">
+                            <option value="">Toutes les classes</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Supercar">Supercar</option>
+                            <option value="Grand Tourer">Grand Tourer</option>
+                            <option value="Ultra Luxury">Ultra Luxury</option>
+                        </select>
+                    </div>
+
+                    @if (FilteredCars.Count == 0)
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon">🚗</div>
+                            <p>Aucune voiture disponible</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="cars-grid">
+                            @foreach (var car in FilteredCars)
+                            {
+                                <div class="car-card card" @onclick="() => ShowRentalModal(car)">
+                                    <div class="car-image-container">
+                                        <img src="@car.ImageUrl" alt="@car.Make @car.Model" class="car-image" />
+                                        <div class="car-badge">@car.Class</div>
+                                        <div class="car-overlay">
+                                            <button class="btn btn-primary">Réserver maintenant</button>
+                                        </div>
+                                    </div>
+                                    <div class="car-content">
+                                        <h3 class="car-title">@car.Make @car.Model</h3>
+                                        <div class="car-price-section">
+                                            <div>
+                                                <span class="car-price">@car.PricePerDay.ToString("N0") €</span>
+                                                <span class="car-price-label">/ jour</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="rentals-section">
+                    @if (myRentals.Count == 0)
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <p>Vous n'avez pas encore de réservation</p>
+                            <button class="btn btn-primary" @onclick='() => SwitchTab("cars")'>
+                                Explorer les voitures
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="rentals-list">
+                            @foreach (var rental in myRentals)
+                            {
+                                <div class="rental-card card">
+                                    <div class="rental-image">
+                                        <img src="@rental.Car?.ImageUrl" alt="@rental.Car?.Make @rental.Car?.Model" />
+                                    </div>
+                                    <div class="rental-details">
+                                        <div class="rental-header">
+                                            <h3>@rental.Car?.Make @rental.Car?.Model</h3>
+                                            <span class="rental-status">Confirmée</span>
+                                        </div>
+                                        <div class="rental-info">
+                                            <div class="info-item">
+                                                <span class="info-icon">📅</span>
+                                                <div>
+                                                    <span class="info-label">Date de début</span>
+                                                    <span class="info-value">@rental.StartDate.ToString("dd MMMM yyyy")</span>
+                                                </div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-icon">📅</span>
+                                                <div>
+                                                    <span class="info-label">Date de fin</span>
+                                                    <span class="info-value">@rental.EndDate.ToString("dd MMMM yyyy")</span>
+                                                </div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-icon">💰</span>
+                                                <div>
+                                                    <span class="info-label">Prix total</span>
+                                                    <span class="info-value price">@rental.TotalPrice.ToString("N0") €</span>
+                                                </div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-icon">⏱️</span>
+                                                <div>
+                                                    <span class="info-label">Durée</span>
+                                                    <span class="info-value">@GetRentalDuration(rental) jours</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@if (showRentalModal && selectedCar != null)
+{
+    <div class="modal-overlay" @onclick="CloseRentalModal">
+        <div class="modal-content card" @onclick:stopPropagation="true">
+            <button class="modal-close" @onclick="CloseRentalModal">✕</button>
+
+            <div class="modal-header">
+                <h2>Réserver @selectedCar.Make @selectedCar.Model</h2>
+                <p class="modal-subtitle">@selectedCar.Class</p>
+            </div>
+
+            <div class="modal-car-preview">
+                <img src="@selectedCar.ImageUrl" alt="@selectedCar.Make @selectedCar.Model" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(rentalError))
+            {
+                <div class="alert alert-error">
+                    <span class="alert-icon">⚠️</span>
+                    <span>@rentalError</span>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(rentalSuccess))
+            {
+                <div class="alert alert-success">
+                    <span class="alert-icon">✓</span>
+                    <span>@rentalSuccess</span>
+                </div>
+            }
+
+            <EditForm Model="@rentalRequest" OnValidSubmit="SubmitRental">
+                <div class="form-group">
+                    <label class="form-label">Nom complet</label>
+                    <InputText class="form-input" @bind-Value="rentalRequest.RenterName" placeholder="Votre nom" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date de début</label>
+                        <InputDate class="form-input" @bind-Value="startDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" @onchange="CalculatePrice" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date de fin</label>
+                        <InputDate class="form-input" @bind-Value="endDate" min="@startDate.AddDays(1).ToString("yyyy-MM-dd")" @onchange="CalculatePrice" />
+                    </div>
+                </div>
+
+                @if (estimatedPrice > 0 && estimatedDays > 0)
+                {
+                    <div class="price-breakdown">
+                        <div class="breakdown-row">
+                            <span>@selectedCar.PricePerDay.ToString("N0") € × @estimatedDays jour@(estimatedDays > 1 ? "s" : "")</span>
+                            <span>@estimatedPrice.ToString("N0") €</span>
+                        </div>
+                        <div class="breakdown-total">
+                            <span>Total</span>
+                            <span class="total-amount">@estimatedPrice.ToString("N0") €</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-full" disabled="@isSubmitting">
+                        @if (isSubmitting)
+                        {
+                            <span class="spinner-small"></span>
+                            <span>Réservation en cours...</span>
+                        }
+                        else
+                        {
+                            <span>Confirmer la réservation</span>
+                        }
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-full" @onclick="CloseRentalModal">Annuler</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Car> availableCars = new();
+    private List<Rental> myRentals = new();
+    private bool isLoading = true;
+    private string activeTab = "cars";
+    private bool showRentalModal = false;
+    private Car? selectedCar;
+    private Rental rentalRequest = new();
+    private DateTime startDate = DateTime.Today.AddDays(1);
+    private DateTime endDate = DateTime.Today.AddDays(2);
+    private decimal estimatedPrice = 0;
+    private int estimatedDays = 0;
+    private bool isSubmitting = false;
+    private string? rentalError;
+    private string? rentalSuccess;
+    private string? userName;
+    private string searchQuery = "";
+    private string filterClass = "";
+
+    private List<Car> FilteredCars
+    {
+        get
+        {
+            var filtered = availableCars.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                filtered = filtered.Where(c =>
+                    c.Make.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    c.Model.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterClass))
+            {
+                filtered = filtered.Where(c => c.Class == filterClass);
+            }
+
+            return filtered.ToList();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(" RenterDashboard: Initializing...");
+
+        await AuthService.InitializeAuth();
+
+        var isAuth = await AuthService.IsAuthenticated();
+        var role = await AuthService.GetRole();
+
+        Console.WriteLine($" RenterDashboard: IsAuth={isAuth}, Role={role}");
+
+        if (!isAuth)
+        {
+            Console.WriteLine(" RenterDashboard: Not authenticated, redirecting to login");
+            Navigation.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        if (role != "Renter")
+        {
+            Console.WriteLine(" RenterDashboard: Not renter role, redirecting to login");
+            Navigation.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        var user = await AuthService.GetCurrentUser();
+        userName = user?.FullName ?? user?.Email ?? "Utilisateur";
+
+        Console.WriteLine(" RenterDashboard: Authentication OK, loading data...");
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        isLoading = true;
+        try
+        {
+            Console.WriteLine(" RenterDashboard: Fetching available cars...");
+            availableCars = await Http.GetFromJsonAsync<List<Car>>("api/renter/cars") ?? new();
+            Console.WriteLine($" RenterDashboard: Loaded {availableCars.Count} cars");
+
+            Console.WriteLine(" RenterDashboard: Fetching my rentals...");
+            myRentals = await Http.GetFromJsonAsync<List<Rental>>("api/renter/myrentals") ?? new();
+            Console.WriteLine($" RenterDashboard: Loaded {myRentals.Count} rentals");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($" RenterDashboard: Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void SwitchTab(string tab)
+    {
+        activeTab = tab;
+    }
+
+    private void ShowRentalModal(Car car)
+    {
+        selectedCar = car;
+        rentalRequest = new Rental
+        {
+            CarId = car.Id,
+            RenterName = userName ?? "",
+            StartDate = DateOnly.FromDateTime(startDate),
+            EndDate = DateOnly.FromDateTime(endDate)
+        };
+        CalculatePrice();
+        showRentalModal = true;
+        rentalError = null;
+        rentalSuccess = null;
+    }
+
+    private void CloseRentalModal()
+    {
+        showRentalModal = false;
+        selectedCar = null;
+        rentalError = null;
+        rentalSuccess = null;
+    }
+
+    private void CalculatePrice()
+    {
+        if (selectedCar != null && endDate > startDate)
+        {
+            estimatedDays = (endDate - startDate).Days;
+            estimatedPrice = selectedCar.PricePerDay * estimatedDays;
+        }
+        else
+        {
+            estimatedDays = 0;
+            estimatedPrice = 0;
+        }
+    }
+
+    private async Task SubmitRental()
+    {
+        if (selectedCar == null) return;
+
+        rentalError = null;
+        rentalSuccess = null;
+        isSubmitting = true;
+
+        try
+        {
+            rentalRequest.StartDate = DateOnly.FromDateTime(startDate);
+            rentalRequest.EndDate = DateOnly.FromDateTime(endDate);
+
+            if (rentalRequest.EndDate <= rentalRequest.StartDate)
+            {
+                rentalError = "La date de fin doit être après la date de début";
+                isSubmitting = false;
+                return;
+            }
+
+            Console.WriteLine($" Submitting rental: CarId={rentalRequest.CarId}, Start={rentalRequest.StartDate}, End={rentalRequest.EndDate}");
+
+            var response = await Http.PostAsJsonAsync("api/renter/rent", rentalRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(" Rental successful!");
+                rentalSuccess = "Réservation confirmée avec succès !";
+                await Task.Delay(1500);
+                await LoadData();
+                CloseRentalModal();
+                activeTab = "rentals";
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($" Rental failed: {response.StatusCode} - {errorContent}");
+                rentalError = "Une erreur est survenue lors de la réservation";
+            }
+        }
+        catch (Exception ex)
+        {
+            rentalError = "Une erreur est survenue lors de la réservation";
+            Console.WriteLine($" Rental exception: {ex.Message}");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private int GetRentalDuration(Rental rental)
+    {
+        return (rental.EndDate.ToDateTime(new TimeOnly(0,0)) - rental.StartDate.ToDateTime(new TimeOnly(0,0))).Days;
+    }
+
+    private async Task HandleLogout()
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?");
+        if (confirmed)
+        {
+            await AuthService.Logout();
+            Navigation.NavigateTo("/login", forceLoad: true);
+        }
+    }
+}

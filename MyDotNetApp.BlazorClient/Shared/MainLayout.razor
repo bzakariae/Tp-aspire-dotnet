@@ -1,0 +1,120 @@
+@inherits LayoutComponentBase
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<div class="app-container">
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <a href="/" class="logo">
+                    <span class="logo-icon">🏎️</span>
+                    <span class="logo-text">Luxury Rental</span>
+                </a>
+
+                @if (isAuthenticated)
+                {
+                    <div class="nav-menu">
+                        <span class="user-name">@userName</span>
+                        <button class="btn btn-secondary" @onclick="HandleLogout">Déconnexion</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        @Body
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Luxury Rental. Tous droits réservés.</p>
+        </div>
+    </footer>
+</div>
+
+<style>
+    .app-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbar {
+        background-color: var(--color-surface);
+        border-bottom: 1px solid var(--color-border);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--color-text);
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .logo-icon {
+        font-size: 2rem;
+    }
+
+    .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .user-name {
+        color: var(--color-text-secondary);
+        font-weight: 500;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 2rem 0;
+    }
+
+    .footer {
+        background-color: var(--color-surface);
+        border-top: 1px solid var(--color-border);
+        padding: 2rem 0;
+        text-align: center;
+        color: var(--color-text-secondary);
+    }
+</style>
+
+@code {
+    private bool isAuthenticated = false;
+    private string? userName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("[v0] MainLayout: Initializing...");
+        isAuthenticated = await AuthService.IsAuthenticated();
+        Console.WriteLine($"[v0] MainLayout: IsAuthenticated={isAuthenticated}");
+        
+        if (isAuthenticated)
+        {
+            userName = await AuthService.GetUserName();
+            Console.WriteLine($"[v0] MainLayout: UserName={userName}");
+        }
+    }
+
+    private async Task HandleLogout()
+    {
+        Console.WriteLine("[v0] MainLayout: Logging out...");
+        await AuthService.Logout();
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+}

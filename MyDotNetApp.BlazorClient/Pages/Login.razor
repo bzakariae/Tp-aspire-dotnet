@@ -1,25 +1,124 @@
 @page "/login"
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@using MyDotNetApp.BlazorClient.Models
 
-<h3>Connexion</h3>
+<div class="auth-page">
+    <div class="container">
+        <div class="auth-card card">
+            <div class="auth-header">
+                <h1 class="auth-title">Bienvenue</h1>
+                <p class="auth-subtitle">Connectez-vous à votre espace</p>
+            </div>
 
-<div class="login-container">
-    <input @bind="username" placeholder="Votre nom" />
-    <button @onclick="HandleLogin">Se connecter</button>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+            <div class="alert alert-error">
+                <span class="alert-icon">⚠️</span>
+                <span>@errorMessage</span>
+            </div>
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+            <div class="alert alert-success">
+                <span class="alert-icon">✓</span>
+                <span>@successMessage</span>
+            </div>
+            }
+
+            <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label class="form-label">Email ou identifiant</label>
+                    <InputText class="form-input" @bind-Value="loginRequest.Email" placeholder="votre@email.com ou ADMIN" />
+                    <ValidationMessage For="@(() => loginRequest.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mot de passe</label>
+                    <InputText type="password" class="form-input" @bind-Value="loginRequest.Password" placeholder="••••••••" />
+                    <ValidationMessage For="@(() => loginRequest.Password)" />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                    <span class="spinner-small"></span>
+                    <span>Connexion en cours...</span>
+                    }
+                    else
+                    {
+                    <span>Se connecter</span>
+                    }
+                </button>
+            </EditForm>
+
+            <div class="auth-divider">
+                <span>ou</span>
+            </div>
+
+            <div class="auth-footer">
+                <p>Pas encore de compte ?</p>
+                <a href="/register" class="btn btn-secondary btn-full">Créer un compte</a>
+            </div>
+
+            <div class="auth-hint">
+                <p class="hint-title">💡 Compte administrateur</p>
+                <p class="hint-text">Email: <strong>ADMIN</strong> | Mot de passe: <strong>ADMINADMIN</strong></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-    private string username = "";
+private LoginRequest loginRequest = new();
+private string? errorMessage;
+private string? successMessage;
+private bool isLoading = false;
 
-    private void HandleLogin()
-    {
-        if (!string.IsNullOrWhiteSpace(username))
-        {
-            // Enregistrer l’utilisateur dans le localStorage
-            localStorage.SetItemAsync("username", username);
-            Navigation.NavigateTo("/rentals");
-        }
-    }
+protected override void OnInitialized()
+{
+var query = new Uri(Navigation.Uri).Query;
+if (query.Contains("registered=true"))
+{
+successMessage = "Compte créé avec succès ! Connectez-vous maintenant.";
+}
+}
 
-    [Inject] private Blazored.LocalStorage.ILocalStorageService? localStorage { get; set; }
-    [Inject] private NavigationManager? Navigation { get; set; }
+private async Task HandleLogin()
+{
+isLoading = true;
+errorMessage = null;
+successMessage = null;
+
+try
+{
+Console.WriteLine($"[v1] Attempting login with email: {loginRequest.Email}");
+var authResponse = await AuthService.Login(loginRequest);
+
+if (authResponse != null)
+{
+Console.WriteLine($"[v1] Login successful, role: {authResponse.Role}");
+if (authResponse.Role == "Admin")
+Navigation.NavigateTo("/admin", forceLoad: true);
+else
+Navigation.NavigateTo("/renter", forceLoad: true);
+}
+else
+{
+errorMessage = "Email ou mot de passe incorrect";
+}
+}
+catch (Exception ex)
+{
+errorMessage = "Une erreur est survenue lors de la connexion";
+Console.WriteLine($"[v1] Login exception: {ex.Message}");
+}
+finally
+{
+isLoading = false;
+}
+}
 }

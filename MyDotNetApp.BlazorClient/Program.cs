@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Blazored.LocalStorage;
 using MyDotNetApp.BlazorClient;
 using MyDotNetApp.BlazorClient.Services;
+using Blazored.LocalStorage;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// ✅ Configure le HttpClient pour ton API
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5222/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5222") });
 
-// ✅ Active le stockage local
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthService>();
 
-// ✅ Ajoute ton ApiService (important si tu l’utilises dans tes pages)
-builder.Services.AddScoped<ApiService>();
+var host = builder.Build();
 
-await builder.Build().RunAsync();
+var authService = host.Services.GetRequiredService<AuthService>();
+await authService.InitializeAuth();
+
+await host.RunAsync();

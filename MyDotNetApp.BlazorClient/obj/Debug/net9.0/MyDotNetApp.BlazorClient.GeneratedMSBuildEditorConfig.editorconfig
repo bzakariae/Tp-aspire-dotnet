@@ -3,9 +3,6 @@ build_property.EnableAotAnalyzer =
 build_property.EnableSingleFileAnalyzer = 
 build_property.EnableTrimAnalyzer = false
 build_property.IncludeAllContentForSelfExtract = 
-build_property.MudDebugAnalyzer = 
-build_property.MudAllowedAttributePattern = 
-build_property.MudAllowedAttributeList = 
 build_property.TargetFramework = net9.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = 
@@ -31,38 +28,30 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Components/CarCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYXJDYXJkLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Components/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZNZW51LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Components/RentalList.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSZW50YWxMaXN0LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/AdminCars.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5DYXJzLnJhem9y
+[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Admin/AdminDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRtaW5EYXNoYm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Login.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Renter/RenterDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVudGVyXFJlbnRlckRhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/MyRentals.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlSZW50YWxzLnJhem9y
+[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Layout/MainLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-oynwolnq33
+[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xqc0al4nu8
+
+[C:/Users/User1/Tp-aspire-dotnet/MyDotNetApp.BlazorClient/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fmxelmspyx

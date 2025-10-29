@@ -1,40 +1,111 @@
 @page "/"
-@inject ApiService Api
+@inject AuthService AuthService
+@inject NavigationManager Navigation
 
-<h1>Available Cars</h1>
+<div class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Vivez l'expérience du luxe</h1>
+            <p class="hero-subtitle">Louez les voitures les plus prestigieuses du monde</p>
+            <div class="hero-actions">
+                @if (!isAuthenticated)
+                {
+                    <button class="btn btn-primary" @onclick='() => Navigation.NavigateTo("/login")'>Se connecter</button>
+                    <button class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/register")'>S'inscrire</button>
+                }
+                else
+                {
+                    @if (userRole == "Admin")
+                    {
+                        <button class="btn btn-primary" @onclick='() => Navigation.NavigateTo("/admin")'>Tableau de bord Admin</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" @onclick='() => Navigation.NavigateTo("/renter")'>Explorer les voitures</button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
-@if (Cars == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    @foreach (var car in Cars)
-    {
-        <CarCard Car="car" OnRent="RentCar" />
+<style>
+    .hero {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        position: relative;
+        overflow: hidden;
     }
-}
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/placeholder.svg?height=800&width=1400');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.15;
+    }
+
+    .hero-content {
+        position: relative;
+        text-align: center;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: var(--color-text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+    }
+</style>
 
 @code {
-    private List<Car>? Cars;
-
+    private bool isAuthenticated = false;
+    private string? userRole;
 
     protected override async Task OnInitializedAsync()
     {
-        Cars = await Api.GetAvailableCars();
-    }
-
-    private async Task RentCar(int carId)
-    {
-        var rental = new RentalRequest
+        isAuthenticated = await AuthService.IsAuthenticated();
+        if (isAuthenticated)
         {
-            CarId = carId,
-            RenterName = "Demo User",
-            StartDate = DateOnly.FromDateTime(DateTime.Today),
-            EndDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1))
-        };
-
-        var success = await Api.RentCar(rental);
-        if (success) Cars = await Api.GetAvailableCars();
+            userRole = await AuthService.GetRole();
+        }
     }
 }

@@ -2,76 +2,105 @@ using Microsoft.EntityFrameworkCore;
 using LuxuryRental.Api.Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using LuxuryRental.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Active les defaults fournis par MyDotNetApp.ServiceDefaults (health, discovery, OTEL, resilience)
 builder.AddServiceDefaults();
 
-// -------------------
-// 🔧 CONFIGURATION DU CORS (pour Blazor)
-// -------------------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", policy =>
     {
-        // Ici, le frontend Blazor sera servi depuis le même domaine ou localhost
-        policy.AllowAnyOrigin() // ou mettre l'URL de ton client Blazor si besoin
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// -------------------
-// 🔧 CONFIGURATION DE LA BASE DE DONNÉES
-// -------------------
 var connection = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<RentalContext>(opt => opt.UseNpgsql(connection));
 
-// -------------------
-// 🚀 CONFIGURATION DES CONTROLLERS ET SWAGGER
-// -------------------
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "LuxuryRentalApi",
+            ValidAudience = builder.Configuration["Jwt:Audience"] ?? "LuxuryRentalClient",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "YourSuperSecretKeyThatIsAtLeast32CharactersLong!"))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<JwtService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "MyDotNetApp.ApiService",
+        Title = "Luxury Rental API",
         Version = "v1",
         Description = "API de gestion de location de voitures de luxe"
     });
+    
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
-// -------------------
-// 🏗️ CONSTRUCTION DE L’APPLICATION
-// -------------------
 var app = builder.Build();
 
-// Mappe les endpoints par défaut (health/alive) définis dans les extensions
+await DbInitializer.InitializeAsync(app.Services);
+
 app.MapDefaultEndpoints();
 
-// -------------------
-// 🚪 MIDDLEWARES
-// -------------------
-app.UseCors("AllowBlazorClient"); // CORS pour Blazor
+app.UseCors("AllowBlazorClient");
 
-// Swagger (uniquement en dev)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyDotNetApp.ApiService v1"));
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Luxury Rental API v1"));
 }
 
 app.UseRouting();
 
-// -------------------
-// ⚙️ MAPPE LES CONTROLLERS
-// -------------------
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
-// -------------------
-// 🏁 DÉMARRAGE
-// -------------------
 app.Run();

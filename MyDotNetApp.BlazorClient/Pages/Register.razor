@@ -1,0 +1,106 @@
+@page "/register"
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@using MyDotNetApp.BlazorClient.Models
+
+<div class="auth-page">
+    <div class="container">
+        <div class="auth-card card">
+            <div class="auth-header">
+                <h1 class="auth-title">Créer un compte</h1>
+                <p class="auth-subtitle">Rejoignez-nous et louez des voitures de luxe</p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-error">
+                    <span class="alert-icon">⚠️</span>
+                    <span>@errorMessage</span>
+                </div>
+            }
+
+            <EditForm Model="@registerRequest" OnValidSubmit="HandleRegister">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label class="form-label">Nom complet</label>
+                    <InputText class="form-input" @bind-Value="registerRequest.FullName" placeholder="Jean Dupont" />
+                    <ValidationMessage For="@(() => registerRequest.FullName)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <InputText class="form-input" @bind-Value="registerRequest.Email" placeholder="votre@email.com" />
+                    <ValidationMessage For="@(() => registerRequest.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mot de passe</label>
+                    <InputText type="password" class="form-input" @bind-Value="registerRequest.Password" placeholder="••••••••" />
+                    <ValidationMessage For="@(() => registerRequest.Password)" />
+                    <small class="form-hint">Minimum 6 caractères</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <span class="spinner-small"></span>
+                        <span>Inscription en cours...</span>
+                    }
+                    else
+                    {
+                        <span>S'inscrire</span>
+                    }
+                </button>
+            </EditForm>
+
+            <div class="auth-divider">
+                <span>ou</span>
+            </div>
+
+            <div class="auth-footer">
+                <p>Déjà un compte ?</p>
+                <a href="/login" class="btn btn-secondary btn-full">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterRequest registerRequest = new();
+    private string? errorMessage;
+    private bool isLoading = false;
+
+    private async Task HandleRegister()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            Console.WriteLine($" Attempting registration with email: {registerRequest.Email}");
+
+            var authResponse = await AuthService.Register(registerRequest);
+
+            if (authResponse != null)
+            {
+                Console.WriteLine($" Registration successful, role: {authResponse.Role}");
+                Navigation.NavigateTo("/renter", forceLoad: true);
+            }
+            else
+            {
+                errorMessage = "Une erreur est survenue. L'email existe peut-être déjà.";
+                Console.WriteLine(" Registration failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Une erreur est survenue lors de l'inscription";
+            Console.WriteLine($" Registration exception: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
