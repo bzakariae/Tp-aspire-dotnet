@@ -28,21 +28,19 @@ namespace LuxuryRental.Api.Data
                     logger.LogInformation("Base de données vérifiée");
                 }
 
-                if (!await context.Users.AnyAsync(u => u.Email == "ADMIN"))
+                if (!await context.Users.AnyAsync(u => u.Email == "admin@yassine.com"))
                 {
-                    logger.LogInformation("Création du compte administrateur...");
                     var admin = new User
                     {
-                        Email = "ADMIN",
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("ADMINADMIN"),
+                        Email = "admin@yassine.com",
+                        PasswordHash = "ADMINADMIN",
                         FullName = "Administrator",
                         Role = "Admin",
                         CreatedAt = DateTime.UtcNow
                     };
+
                     context.Users.Add(admin);
                     await context.SaveChangesAsync();
-                    logger.LogInformation("✓ Compte administrateur créé avec succès");
-                    logger.LogInformation("  Login: ADMIN | Mot de passe: ADMINADMIN");
                 }
                 else
                 {

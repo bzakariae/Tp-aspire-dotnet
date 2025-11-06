@@ -17,8 +17,9 @@ namespace LuxuryRental.Api.Models
         public string FullName { get; set; } = "";
 
         [Required]
-        public string Role { get; set; } = "Renter"; // "Admin" or "Renter"
+        public string Role { get; set; } = "Renter"; 
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     }
 }

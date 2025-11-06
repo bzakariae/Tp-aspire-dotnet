@@ -1,124 +1,233 @@
 @page "/login"
 @inject AuthService AuthService
 @inject NavigationManager Navigation
+@inject HttpClient Http
 @using MyDotNetApp.BlazorClient.Models
+@using MyDotNetApp.BlazorClient.Services
 
 <div class="auth-page">
     <div class="container">
         <div class="auth-card card">
             <div class="auth-header">
                 <h1 class="auth-title">Bienvenue</h1>
-                <p class="auth-subtitle">Connectez-vous à votre espace</p>
+                <p class="auth-subtitle">Connectez-vous avec Discord ou accédez à l'espace admin</p>
             </div>
 
             @if (!string.IsNullOrEmpty(errorMessage))
             {
-            <div class="alert alert-error">
-                <span class="alert-icon">⚠️</span>
-                <span>@errorMessage</span>
-            </div>
+                <div class="alert alert-error">
+                    <span class="alert-icon">⚠️</span>
+                    <span>@errorMessage</span>
+                </div>
             }
 
-            @if (!string.IsNullOrEmpty(successMessage))
-            {
-            <div class="alert alert-success">
-                <span class="alert-icon">✓</span>
-                <span>@successMessage</span>
-            </div>
-            }
-
-            <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
-                <DataAnnotationsValidator />
-
-                <div class="form-group">
-                    <label class="form-label">Email ou identifiant</label>
-                    <InputText class="form-input" @bind-Value="loginRequest.Email" placeholder="votre@email.com ou ADMIN" />
-                    <ValidationMessage For="@(() => loginRequest.Email)" />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Mot de passe</label>
-                    <InputText type="password" class="form-input" @bind-Value="loginRequest.Password" placeholder="••••••••" />
-                    <ValidationMessage For="@(() => loginRequest.Password)" />
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-full" disabled="@isLoading">
-                    @if (isLoading)
-                    {
+            @* Bouton Discord OAuth *@
+            <button type="button" class="btn btn-discord btn-full" @onclick="HandleDiscordLogin" disabled="@isLoading">
+                @if (isLoading)
+                {
                     <span class="spinner-small"></span>
-                    <span>Connexion en cours...</span>
-                    }
-                    else
-                    {
-                    <span>Se connecter</span>
-                    }
-                </button>
-            </EditForm>
+                    <span>Redirection vers Discord...</span>
+                }
+                else
+                {
+                    <svg width="24" height="24" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542..." fill="white"/>
+                    </svg>
+                    <span>Se connecter avec Discord</span>
+                }
+            </button>
 
             <div class="auth-divider">
                 <span>ou</span>
             </div>
 
-            <div class="auth-footer">
-                <p>Pas encore de compte ?</p>
-                <a href="/register" class="btn btn-secondary btn-full">Créer un compte</a>
-            </div>
+            @* Bouton pour admin *@
+            <button class="btn btn-admin btn-full" @onclick="() => showAdminForm = !showAdminForm">
+                <i class="fas fa-user-shield"></i> Accès Espace Admin
+            </button>
 
-            <div class="auth-hint">
-                <p class="hint-title">💡 Compte administrateur</p>
-                <p class="hint-text">Email: <strong>ADMIN</strong> | Mot de passe: <strong>ADMINADMIN</strong></p>
+            @if (showAdminForm)
+            {
+                <div class="admin-login-form">
+                    <input type="email" class="form-input" placeholder="Email" @bind="adminEmail" />
+                    <input type="password" class="form-input" placeholder="Mot de passe" @bind="adminPassword" />
+                    <button class="btn btn-primary btn-full" @onclick="HandleAdminLogin" disabled="@isAdminLoading">
+                        @if (isAdminLoading)
+                        {
+                            <span>Connexion en cours...</span>
+                        }
+                        else
+                        {
+                            <span>Connexion</span>
+                        }
+                    </button>
+                </div>
+            }
+
+            <div class="auth-info">
+                <p class="text-sm text-muted">
+                    ✓ Authentification sécurisée<br/>
+                    ✓ OAuth 2.0 & Admin local<br/>
+                    ✓ Connexion rapide et fiable
+                </p>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .btn-discord {
+        background: #5865F2;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-discord:hover:not(:disabled) {
+        background: #4752C4;
+    }
+
+    .btn-admin {
+        background: #111827;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        padding: 0.875rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-admin:hover {
+        background: #1f2937;
+    }
+
+    .admin-login-form {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .form-input {
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .btn-primary {
+        background-color: #2563EB;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        background-color: #1E40AF;
+    }
+
+    .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-divider {
+        text-align: center;
+        margin: 1.5rem 0;
+        color: #6b7280;
+    }
+</style>
+
 @code {
-private LoginRequest loginRequest = new();
-private string? errorMessage;
-private string? successMessage;
-private bool isLoading = false;
+    private string? errorMessage;
+    private bool isLoading = false;
+    private bool isAdminLoading = false;
+    private bool showAdminForm = false;
+    private string adminEmail = "";
+    private string adminPassword = "";
 
-protected override void OnInitialized()
-{
-var query = new Uri(Navigation.Uri).Query;
-if (query.Contains("registered=true"))
-{
-successMessage = "Compte créé avec succès ! Connectez-vous maintenant.";
-}
-}
+    private async Task HandleDiscordLogin()
+    {
+        isLoading = true;
+        errorMessage = null;
 
-private async Task HandleLogin()
-{
-isLoading = true;
-errorMessage = null;
-successMessage = null;
+        try
+        {
+            var authUrl = await AuthService.InitiateDiscordLogin();
+            Navigation.NavigateTo(authUrl, forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Erreur lors de la connexion Discord";
+            Console.WriteLine($" Discord login error: {ex.Message}");
+            isLoading = false;
+        }
+    }
 
-try
-{
-Console.WriteLine($"[v1] Attempting login with email: {loginRequest.Email}");
-var authResponse = await AuthService.Login(loginRequest);
+    private async Task HandleAdminLogin()
+    {
+        errorMessage = null;
+        isAdminLoading = true;
 
-if (authResponse != null)
-{
-Console.WriteLine($"[v1] Login successful, role: {authResponse.Role}");
-if (authResponse.Role == "Admin")
-Navigation.NavigateTo("/admin", forceLoad: true);
-else
-Navigation.NavigateTo("/renter", forceLoad: true);
-}
-else
-{
-errorMessage = "Email ou mot de passe incorrect";
-}
-}
-catch (Exception ex)
-{
-errorMessage = "Une erreur est survenue lors de la connexion";
-Console.WriteLine($"[v1] Login exception: {ex.Message}");
-}
-finally
-{
-isLoading = false;
-}
-}
+        try
+        {
+            Console.WriteLine($" Attempting admin login for: {adminEmail}");
+            
+            var loginRequest = new Services.LoginRequest
+            {
+                Email = adminEmail,
+                Password = adminPassword
+            };
+
+            var result = await AuthService.Login(loginRequest);
+
+            if (result != null)
+            {
+                Console.WriteLine($" Admin login successful, role: {result.Role}");
+                
+                if (result.Role == "Admin")
+                {
+                    Navigation.NavigateTo("/admin", forceLoad: true);
+                }
+                else
+                {
+                    errorMessage = "Accès réservé à l'administrateur";
+                    isAdminLoading = false;
+                }
+            }
+            else
+            {
+                errorMessage = "Email ou mot de passe incorrect";
+                Console.WriteLine(" Admin login failed: invalid credentials");
+                isAdminLoading = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Erreur de connexion au serveur";
+            Console.WriteLine($" Admin login error: {ex.Message}");
+            isAdminLoading = false;
+        }
+    }
 }

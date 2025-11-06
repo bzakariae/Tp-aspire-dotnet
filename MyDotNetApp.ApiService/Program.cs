@@ -44,6 +44,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<JwtService>();
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 

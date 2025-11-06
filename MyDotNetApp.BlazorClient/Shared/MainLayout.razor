@@ -100,20 +100,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("[v0] MainLayout: Initializing...");
+        Console.WriteLine(" MainLayout: Initializing...");
         isAuthenticated = await AuthService.IsAuthenticated();
-        Console.WriteLine($"[v0] MainLayout: IsAuthenticated={isAuthenticated}");
+        Console.WriteLine($" MainLayout: IsAuthenticated={isAuthenticated}");
         
         if (isAuthenticated)
         {
             userName = await AuthService.GetUserName();
-            Console.WriteLine($"[v0] MainLayout: UserName={userName}");
+            Console.WriteLine($" MainLayout: UserName={userName}");
         }
     }
 
     private async Task HandleLogout()
     {
-        Console.WriteLine("[v0] MainLayout: Logging out...");
+        Console.WriteLine(" MainLayout: Logging out...");
         await AuthService.Logout();
         Navigation.NavigateTo("/login", forceLoad: true);
     }
