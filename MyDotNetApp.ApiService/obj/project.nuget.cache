@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nX5gwyavzuQ=",
+  "dgSpecHash": "AAvW5VIrMOQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.ApiService\\MyDotNetApp.ApiService.csproj",
   "expectedPackageFiles": [
@@ -24,6 +24,7 @@
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.10\\microsoft.entityframeworkcore.analyzers.9.0.10.nupkg.sha512",
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.entityframeworkcore.design\\9.0.10\\microsoft.entityframeworkcore.design.9.0.10.nupkg.sha512",
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\9.0.10\\microsoft.entityframeworkcore.relational.9.0.10.nupkg.sha512",
+    "C:\\Users\\User1\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\9.0.10\\microsoft.entityframeworkcore.tools.9.0.10.nupkg.sha512",
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.extensions.ambientmetadata.application\\9.9.0\\microsoft.extensions.ambientmetadata.application.9.9.0.nupkg.sha512",
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\User1\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\9.0.10\\microsoft.extensions.caching.abstractions.9.0.10.nupkg.sha512",

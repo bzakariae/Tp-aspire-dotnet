@@ -27,6 +27,8 @@ namespace LuxuryRental.Api.Models
 
         public decimal TotalPrice { get; set; }
 
+        public RentalStatus Status { get; set; } = RentalStatus.Pending;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

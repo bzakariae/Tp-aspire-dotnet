@@ -200,8 +200,6 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroo
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_CJK.tjcz0u77k5.dat
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_EFIGS.tptq2av103.dat
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_no_CJK.lfu7j35m59.dat
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.36dw4flvfj.wasm
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ry74xcw1ow.pdb
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\blazor.boot.json
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\blazor.webassembly.js.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\Blazored.LocalStorage.12n6dz54qr.wasm.gz
@@ -405,8 +403,6 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroo
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_CJK.tjcz0u77k5.dat.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_EFIGS.tptq2av103.dat.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\icudt_no_CJK.lfu7j35m59.dat.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.36dw4flvfj.wasm.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ry74xcw1ow.pdb.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\blazor.boot.json.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\MyDotNetApp.BlazorClient.staticwebassets.runtime.json
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\MyDotNetApp.BlazorClient.staticwebassets.endpoints.json
@@ -820,10 +816,7 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\rjsmcs
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\scopedcss\bundle\MyDotNetApp.BlazorClient.styles.css
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\blazor.build.boot-extension.json
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\blazor.boot.json
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\767aa66jzu-vnv679pijl.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\bj2kcsg1yb-39ujnhn91v.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\f5l3yrrvy4-2gsrwvbe5w.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\bleor093un-te0xqw02dn.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\767aa66jzu-wd0tyusz9r.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\y6iw42rt4m-bqjiyaj88i.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\4x6t3xyy06-c2jlpeoesf.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\uu6fx9dxic-erw9l3u2r3.gz
@@ -1071,9 +1064,6 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compre
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\m23h1r0wzq-tjcz0u77k5.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\sw2np8odqb-tptq2av103.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\1hhkd1qbn8-lfu7j35m59.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-36dw4flvfj.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-ry74xcw1ow.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-v2dt9d6hy8.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\staticwebassets.development.json
@@ -1083,3 +1073,11 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\MyDotN
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\refint\MyDotNetApp.BlazorClient.dll
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\MyDotNetApp.BlazorClient.pdb
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\ref\MyDotNetApp.BlazorClient.dll
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\bleor093un-5irxa6w8pg.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.q3we8ocoz8.wasm
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ni03398q7n.pdb
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.q3we8ocoz8.wasm.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ni03398q7n.pdb.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-q3we8ocoz8.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-ni03398q7n.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-k6han63xxq.gz

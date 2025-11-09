@@ -10,6 +10,7 @@ using LuxuryRental.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddScoped<MyDotNetApp.ApiService.Services.DocumentService>();
 
 builder.Services.AddCors(options =>
 {
@@ -53,7 +54,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Luxury Rental API",
+        Title = "FuegoCars API",
         Version = "v1",
         Description = "API de gestion de location de voitures de luxe"
     });
@@ -95,7 +96,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Luxury Rental API v1"));
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "FuegoCars API v1"));
 }
 
 app.UseRouting();
