@@ -1,10 +1,9 @@
 @page "/"
-@inject AuthService AuthService
+@using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager Navigation
 
 <div class="hero-container">
     <div class="mesh-gradient"></div>
-    
     <div class="grid-overlay"></div>
 
     <div class="hero-content">
@@ -42,42 +41,47 @@
             </div>
 
             <div class="cta-container">
-                @if (!isAuthenticated)
-                {
-                    <button class="cta-button primary" @onclick='() => Navigation.NavigateTo("/login")'>
-                        <span class="button-content">
-                            <span class="button-icon">→</span>
-                            <span class="button-text">Se connecter</span>
-                        </span>
-                        <span class="button-glow"></span>
-                    </button>
-                    <button class="cta-button secondary" @onclick='() => Navigation.NavigateTo("/login")'>
-                        <span class="button-text">En savoir plus</span>
-                    </button>
-                }
-                else
-                {
-                    @if (userRole == "Admin")
-                    {
-                        <button class="cta-button primary" @onclick='() => Navigation.NavigateTo("/admin")'>
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <button class="cta-button primary"
+                                @onclick='() => Navigation.NavigateTo("authentication/login")'>
                             <span class="button-content">
-                                <span class="button-icon">⚡</span>
-                                <span class="button-text">Tableau de bord Admin</span>
+                                <span class="button-icon">→</span>
+                                <span class="button-text">Se connecter</span>
                             </span>
                             <span class="button-glow"></span>
                         </button>
-                    }
-                    else
-                    {
-                        <button class="cta-button primary" @onclick='() => Navigation.NavigateTo("/renter")'>
-                            <span class="button-content">
-                                <span class="button-icon">🏎️</span>
-                                <span class="button-text">Explorer les voitures</span>
-                            </span>
-                            <span class="button-glow"></span>
+                        <button class="cta-button secondary"
+                                @onclick='() => Navigation.NavigateTo("authentication/login")'>
+                            <span class="button-text">En savoir plus</span>
                         </button>
-                    }
-                }
+                    </NotAuthorized>
+
+                    <Authorized Context="auth">
+                        @if (auth.User.IsInRole("ROLE_RENTAL_MANAGER"))
+                        {
+                            <button class="cta-button primary"
+                                    @onclick='() => Navigation.NavigateTo("/admin")'>
+                                <span class="button-content">
+                                    <span class="button-icon">⚡</span>
+                                    <span class="button-text">Tableau de bord Admin</span>
+                                </span>
+                                <span class="button-glow"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="cta-button primary"
+                                    @onclick='() => Navigation.NavigateTo("/renter")'>
+                                <span class="button-content">
+                                    <span class="button-icon">🏎️</span>
+                                    <span class="button-text">Explorer les voitures</span>
+                                </span>
+                                <span class="button-glow"></span>
+                            </button>
+                        }
+                    </Authorized>
+                </AuthorizeView>
             </div>
 
             <div class="features-grid">
@@ -504,16 +508,3 @@
     }
 </style>
 
-@code {
-    private bool isAuthenticated = false;
-    private string? userRole;
-
-    protected override async Task OnInitializedAsync()
-    {
-        isAuthenticated = await AuthService.IsAuthenticated();
-        if (isAuthenticated)
-        {
-            userRole = await AuthService.GetRole();
-        }
-    }
-}
