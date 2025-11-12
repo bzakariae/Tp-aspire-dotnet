@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
 @page "/"
 @using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager Navigation
@@ -44,7 +46,7 @@
                 <AuthorizeView>
                     <NotAuthorized>
                         <button class="cta-button primary"
-                                @onclick='() => Navigation.NavigateTo("authentication/login")'>
+                                @onclick='() => Navigation.NavigateTo("/login")'>
                             <span class="button-content">
                                 <span class="button-icon">→</span>
                                 <span class="button-text">Se connecter</span>
@@ -52,13 +54,20 @@
                             <span class="button-glow"></span>
                         </button>
                         <button class="cta-button secondary"
-                                @onclick='() => Navigation.NavigateTo("authentication/login")'>
+                                @onclick='() => Navigation.NavigateTo("/login")'>
                             <span class="button-text">En savoir plus</span>
                         </button>
                     </NotAuthorized>
 
                     <Authorized Context="auth">
-                        @if (auth.User.IsInRole("ROLE_RENTAL_MANAGER"))
+                        @{
+                            bool isAdmin = auth.User.Claims.Any(c =>
+                                c.Type == "roles" && c.Value.Contains("ROLE_RENTAL_MANAGER"));
+
+                            bool isCustomer = auth.User.Claims.Any(c =>
+                                c.Type == "roles" && c.Value.Contains("ROLE_RENTAL_CUSTOMER"));
+                        }
+                        @if (isAdmin)
                         {
                             <button class="cta-button primary"
                                     @onclick='() => Navigation.NavigateTo("/admin")'>
@@ -69,7 +78,7 @@
                                 <span class="button-glow"></span>
                             </button>
                         }
-                        else
+                        else if (isCustomer)
                         {
                             <button class="cta-button primary"
                                     @onclick='() => Navigation.NavigateTo("/renter")'>
@@ -79,6 +88,10 @@
                                 </span>
                                 <span class="button-glow"></span>
                             </button>
+                        }
+                        else
+                        {
+                            <p class="text-warning">Rôle non reconnu</p>
                         }
                     </Authorized>
                 </AuthorizeView>

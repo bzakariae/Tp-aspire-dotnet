@@ -1,11 +1,17 @@
 @page "/admin"
-@inject HttpClient Http
-@inject AuthService AuthService
-@inject NavigationManager Navigation
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ROLE_RENTAL_MANAGER")]
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 @using MyDotNetApp.BlazorClient.Models
-@using MyDotNetApp.BlazorClient.Services
+
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 @inject NotificationService NotificationService
+
 
 <div class="luxury-navbar">
     <div class="navbar-container">
@@ -355,6 +361,8 @@
 }
 
 <style>
+  
+
     /* Reset & Base */
     * {
         margin: 0;
@@ -527,6 +535,30 @@
         position: relative;
         overflow: hidden;
     }
+    .stat-card {
+        --gradient-from: #6366f1;
+        --gradient-to: #ec4899;
+    }
+    .stat-card.stat-purple {
+         --gradient-from: #6366f1;
+         --gradient-to: #a855f7;
+     }
+    
+    .stat-card.stat-green {
+        --gradient-from: #22c55e;
+        --gradient-to: #16a34a;
+    }
+
+    .stat-card.stat-blue {
+        --gradient-from: #3b82f6;
+        --gradient-to: #06b6d4;
+    }
+
+    .stat-card.stat-orange {
+        --gradient-from: #f59e0b;
+        --gradient-to: #ef4444;
+    }
+
 
     .stat-card::before {
         content: '';
@@ -535,8 +567,13 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--gradient-from), var(--gradient-to));
+        background: linear-gradient(
+            90deg,
+            var(--gradient-from, #6366f1),
+            var(--gradient-to, #ec4899)
+        );
     }
+
 
     .stat-card:hover {
         transform: translateY(-4px);
@@ -1188,6 +1225,9 @@
 </style>
 
 @code {
+    [CascadingParameter] private Task<AuthenticationState> AuthStateTask { get; set; } = default!;
+
+
     private List<Car> cars = new();
     private List<Rental> rentals = new();
     private List<Rental> pendingRentals = new();
@@ -1199,16 +1239,12 @@
     private Rental? rejectingRental;
     private string rejectReason = "";
 
+
     protected override async Task OnInitializedAsync()
     {
-        var isAuth = await AuthService.IsAuthenticated();
-        var role = await AuthService.GetRole();
-
-        if (!isAuth || role != "Admin")
-        {
-            Navigation.NavigateTo("/login", forceLoad: true);
-            return;
-        }
+        var user = (await AuthStateTask).User;
+        if (!(user.Identity?.IsAuthenticated ?? false)) return;
+        if (!user.IsInRole("ROLE_RENTAL_MANAGER")) return;
 
         await LoadData();
     }
@@ -1237,11 +1273,15 @@
         }
     }
 
+    [Inject] KeycloakAuthService Auth { get; set; } = default!;
+    [Inject] IJSRuntime JS { get; set; } = default!;
+
     private async Task HandleLogout()
     {
-        await AuthService.Logout();
-        Navigation.NavigateTo("/login", forceLoad: true);
+        if (await JS.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?"))
+            await Auth.LogoutAsync();
     }
+
 
     private void ShowAddCarModal()
     {

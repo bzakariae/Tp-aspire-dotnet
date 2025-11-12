@@ -1,12 +1,16 @@
 @page "/renter"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ROLE_RENTAL_CUSTOMER")]
+
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
 @inject HttpClient Http
-@inject AuthService AuthService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
-@using MyDotNetApp.BlazorClient.Models
-@using MyDotNetApp.BlazorClient.Services
 @inject NotificationService NotificationService
-
+<CascadingAuthenticationState>
 <div class="renter-navbar">
     <div class="navbar-container">
         <div class="navbar-brand">
@@ -335,6 +339,7 @@
         </div>
     </div>
 }
+</CascadingAuthenticationState>
 
 <style>
     * {
@@ -1194,6 +1199,9 @@
 </style>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthStateTask { get; set; } = default!;
+
     private List<Car> availableCars = new();
     private List<Rental> myRentals = new();
     private bool isLoading = true;
@@ -1208,7 +1216,7 @@
     private bool isSubmitting = false;
     private string? rentalError;
     private string? rentalSuccess;
-    private string? userName;
+    private string userName = string.Empty;
     private string searchQuery = "";
     private string filterClass = "";
 
@@ -1235,22 +1243,35 @@
     }
 
     protected override async Task OnInitializedAsync()
-    {
-        await AuthService.InitializeAuth();
-        var isAuth = await AuthService.IsAuthenticated();
-        var role = await AuthService.GetRole();
+    {  /*
+        var authState = await AuthStateTask;
+        var user = authState.User;
 
-        if (!isAuth || role != "Renter")
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
+            // pas connecté → on envoie vers le login OIDC
+            Navigation.NavigateTo("authentication/login?returnUrl=/renter", forceLoad: true);
+            return;
+        }
+
+        // Rôle "Renter" via les claims Keycloak (à adapter selon ta conf)
+        if (!user.IsInRole("Renter"))
+        {
+            // soit tu bloques, soit tu rediriges ailleurs
             Navigation.NavigateTo("/login", forceLoad: true);
             return;
         }
 
-        var user = await AuthService.GetCurrentUser();
-        userName = user?.FullName ?? user?.Email ?? "Utilisateur";
+        // Récup nom depuis les claims
+        userName =
+            user.Identity.Name
+            ?? user.FindFirst("preferred_username")?.Value
+            ?? user.FindFirst(ClaimTypes.Email)?.Value
+            ?? "Utilisateur";*/
 
         await LoadData();
     }
+
 
     private async Task LoadData()
     {
@@ -1405,15 +1426,15 @@
         }
     }
 
+    [Inject] KeycloakAuthService Auth { get; set; } = default!;
+    [Inject] IJSRuntime JS { get; set; } = default!;
+
     private async Task HandleLogout()
     {
-        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?");
-        if (confirmed)
-        {
-            await AuthService.Logout();
-            Navigation.NavigateTo("/login", forceLoad: true);
-        }
+        if (await JS.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?"))
+            await Auth.LogoutAsync();
     }
+
 
     private void HandleImageError(ErrorEventArgs e)
     {

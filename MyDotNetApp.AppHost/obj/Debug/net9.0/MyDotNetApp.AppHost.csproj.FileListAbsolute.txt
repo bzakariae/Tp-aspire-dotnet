@@ -374,3 +374,5 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.AppHost\obj\Debug\net9.0\refint\MyDo
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.AppHost\obj\Debug\net9.0\MyDotNetApp.AppHost.pdb
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.AppHost\obj\Debug\net9.0\MyDotNetApp.AppHost.genruntimeconfig.cache
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.AppHost\obj\Debug\net9.0\ref\MyDotNetApp.AppHost.dll
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.AppHost\obj\Debug\net9.0\Aspire\references\MyDotNetApp_BlazorClient.ProjectMetadata.g.cs
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.AppHost\bin\Debug\net9.0\Aspire.Hosting.Keycloak.dll

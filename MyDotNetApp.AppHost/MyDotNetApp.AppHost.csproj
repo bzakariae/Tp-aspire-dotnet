@@ -12,11 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.1" />
+    <PackageReference Include="Aspire.Hosting.Keycloak" Version="9.5.2-preview.1.25522.3" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.1" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.1" />
     <PackageReference Include="Aspire.Npgsql" Version="9.5.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
     <ProjetReference Include="../MyDotNetApp.ApiService/MyDotNetApp.ApiService.csproj" />
+    <ProjectReference Include="..\MyDotNetApp.BlazorClient\MyDotNetApp.BlazorClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

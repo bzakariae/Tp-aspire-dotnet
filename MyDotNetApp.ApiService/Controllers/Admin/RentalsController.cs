@@ -9,7 +9,8 @@ namespace MyDotNetApp.ApiService.Controllers.Admin
 {
     [ApiController]
     [Route("api/admin/rentals")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "ROLE_RENTAL_MANAGER,ROLE_ADMIN")]
+
     public class AdminRentalsController : ControllerBase
     {
         private readonly RentalContext _db;

@@ -10,7 +10,7 @@ namespace MyDotNetApp.ApiService.Controllers.Renter
 {
     [ApiController]
     [Route("api/renter")]
-    [Authorize(Roles = "Renter")]
+    [Authorize(Roles = "ROLE_RENTAL_CUSTOMER")]
     public class RentalsController : ControllerBase
     {
         private readonly RentalContext _db;

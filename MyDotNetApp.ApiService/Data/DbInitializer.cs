@@ -56,7 +56,7 @@ namespace LuxuryRental.Api.Data
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "❌ Une erreur s'est produite lors de l'initialisation de la base de données");
+                logger.LogError(ex, "Une erreur s'est produite lors de l'initialisation de la base de données");
                 logger.LogError("Conseil: Si les tables existent déjà, supprimez la migration et recréez-la:");
                 logger.LogError("  1. Supprimez le dossier Migrations/");
                 logger.LogError("  2. dotnet ef migrations add InitialCreate");

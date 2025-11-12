@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PhvfHy+ON+g=",
+  "dgSpecHash": "Zat3a1JKHt0=",
   "success": true,
   "projectFilePath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
   "expectedPackageFiles": [
@@ -33,10 +33,15 @@
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.extensions.options\\9.0.10\\microsoft.extensions.options.9.0.10.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\9.0.10\\microsoft.extensions.options.configurationextensions.9.0.10.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.10\\microsoft.extensions.primitives.9.0.10.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.14.0\\microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.14.0\\microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.jsinterop\\9.0.10\\microsoft.jsinterop.9.0.10.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.jsinterop.webassembly\\9.0.0\\microsoft.jsinterop.webassembly.9.0.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.9\\microsoft.net.illink.tasks.9.0.9.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.net.sdk.webassembly.pack\\9.0.9\\microsoft.net.sdk.webassembly.pack.9.0.9.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.14.0\\system.identitymodel.tokens.jwt.8.14.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\system.net.http.json\\9.0.0\\system.net.http.json.9.0.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\9.0.9\\microsoft.netcore.app.runtime.mono.browser-wasm.9.0.9.nupkg.sha512"
   ],
