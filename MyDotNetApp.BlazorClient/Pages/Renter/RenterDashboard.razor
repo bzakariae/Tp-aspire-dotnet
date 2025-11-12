@@ -154,7 +154,7 @@
                             @foreach (var rental in myRentals)
                             {
                                 <div class="rental-card">
-                                    <div class="rental-image-container">
+                                    <div class="rental-image">
                                         @if (!string.IsNullOrEmpty(rental.Car?.ImageUrl) && IsValidImageUrl(rental.Car.ImageUrl))
                                         {
                                             <img src="@rental.Car?.ImageUrl" alt="@rental.Car?.Make @rental.Car?.Model" />                                        }
@@ -734,22 +734,23 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
-    .rental-image-container {
-        width: 100%;
-        height: 100%;
-        min-height: 200px;
+    .rental-image {
+        flex-shrink: 0;
+
+        border-radius: 20px;
         overflow: hidden;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        box-shadow: var(--shadow-md);
     }
 
-    .rental-thumbnail {
+    .rental-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
+        transition: var(--transition-smooth);
+    }
+
+    .rental-card:hover .rental-image img {
+        transform: scale(1.05);
     }
 
     .rental-image-fallback {

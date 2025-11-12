@@ -22,14 +22,14 @@ namespace LuxuryRental.Api.Data
                 .IsUnique();
 
             modelBuilder.Entity<Rental>()
-                .HasOne<User>()
-                .WithMany()
+                .HasOne(r => r.User)      
+                .WithMany()            
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Rental>()
-                .HasOne<Car>()
-                .WithMany()
+                .HasOne(r => r.Car)     
+                .WithMany()              
                 .HasForeignKey(r => r.CarId)
                 .OnDelete(DeleteBehavior.Restrict);
             

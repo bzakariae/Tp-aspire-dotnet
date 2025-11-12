@@ -103,7 +103,8 @@
                 <div class="section">
                     <div class="section-header">
                         <h2 class="section-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
@@ -111,47 +112,74 @@
                         </h2>
                         <span class="badge-count">@pendingRentals.Count</span>
                     </div>
+
                     <div class="pending-rentals-grid">
                         @foreach (var rental in pendingRentals)
                         {
                             <div class="rental-request-card">
-                                <img src="@rental.Car?.ImageUrl" alt="@rental.Car?.Make @rental.Car?.Model" class="rental-car-image" />
+                                <img src="@rental.Car?.ImageUrl"
+                                     alt="@rental.Car?.Make @rental.Car?.Model"
+                                     class="rental-car-image"/>
+
                                 <div class="rental-content">
                                     <h3 class="rental-title">@rental.Car?.Make @rental.Car?.Model</h3>
+
                                     <div class="rental-meta-grid">
                                         <div class="meta-item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="12" cy="7" r="4"></circle>
-                                            </svg>
+                                            <strong>Locataire :</strong>
                                             <span>@rental.RenterName</span>
                                         </div>
+
                                         <div class="meta-item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                                            </svg>
-                                            <span>@rental.StartDate.ToString("dd/MM") - @rental.EndDate.ToString("dd/MM")</span>
+                                            <strong>Dates :</strong>
+                                            <span>@rental.StartDate.ToString("dd/MM/yyyy") - @rental.EndDate.ToString("dd/MM/yyyy")</span>
                                         </div>
+
+                                        <div class="meta-item">
+                                            <strong>Durée :</strong>
+                                            <span>@((rental.EndDate.DayNumber - rental.StartDate.DayNumber)) jours</span>
+                                        </div>
+
+                                        <div class="meta-item">
+                                            <strong>Classe du véhicule :</strong>
+                                            <span>@rental.Car?.Class</span>
+                                        </div>
+
+                                        <div class="meta-item">
+                                            <strong>Prix / jour :</strong>
+                                            <span>@rental.Car?.PricePerDay.ToString("C0")</span>
+                                        </div>
+
                                         <div class="meta-item price">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="12" y1="1" x2="12" y2="23"></line>
-                                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                            </svg>
+                                            <strong>Total :</strong>
                                             <span>@rental.TotalPrice.ToString("C0")</span>
                                         </div>
+
+                                        <div class="meta-item">
+                                            <strong>Date de demande :</strong>
+                                            <span>@rental.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                        </div>
+
+                                        <div class="meta-item">
+                                            <strong>Statut :</strong>
+                                            <span class="status-badge @(rental.Status.ToString().ToLower())">
+                                                @rental.Status
+                                            </span>
+                                        </div>
                                     </div>
+
                                     <div class="rental-actions">
                                         <button class="action-btn approve" @onclick="() => ApproveRental(rental.Id)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <polyline points="20 6 9 17 4 12"></polyline>
                                             </svg>
                                             Approuver
                                         </button>
+
                                         <button class="action-btn reject" @onclick="() => ShowRejectModal(rental)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <line x1="18" y1="6" x2="6" y2="18"></line>
                                                 <line x1="6" y1="6" x2="18" y2="18"></line>
                                             </svg>
@@ -164,6 +192,7 @@
                     </div>
                 </div>
             }
+
 
             <div class="section">
                 <div class="section-header">
@@ -188,7 +217,7 @@
                     {
                         <div class="car-card">
                             <div class="car-image-container">
-                                <img src="@car.ImageUrl" alt="@car.Make @car.Model" />
+                                <img src="@car.ImageUrl" alt="@car.Make @car.Model"/>
                                 <span class="availability-badge @(car.IsAvailable ? "available" : "unavailable")">
                                     <span class="badge-dot"></span>
                                     @(car.IsAvailable ? "Disponible" : "Louée")
@@ -234,44 +263,46 @@
                             <line x1="3" y1="12" x2="3.01" y2="12"></line>
                             <line x1="3" y1="18" x2="3.01" y2="18"></line>
                         </svg>
-                        Réservations en attente
+                        Dernières actions
                     </h2>
                 </div>
                 <div class="table-container">
                     <table class="modern-table">
                         <thead>
-                            <tr>
-                                <th>Client</th>
-                                <th>Voiture</th>
-                                <th>Dates</th>
-                                <th>Montant</th>
-                                <th>Statut</th>
-                            </tr>
+                        <tr>
+                            <th>Client</th>
+                            <th>Voiture</th>
+                            <th>Dates</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var rental in rentals.Take(10))
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="table-user">
-                                            <div class="user-avatar-sm">@rental.RenterName.Substring(0, 1)</div>
-                                            <span>@rental.RenterName</span>
-                                        </div>
-                                    </td>
-                                    <td class="table-car">@rental.Car?.Make @rental.Car?.Model</td>
-                                    <td class="table-dates">
-                                        <div>@rental.StartDate.ToString("dd/MM/yy")</div>
-                                        <div class="date-separator">→</div>
-                                        <div>@rental.EndDate.ToString("dd/MM/yy")</div>
-                                    </td>
-                                    <td class="table-price">@rental.TotalPrice.ToString("C0")</td>
-                                    <td>
-                                        <span class="status-badge status-@rental.Status.ToString().ToLower()">
-                                            @GetStatusText(rental.Status)
-                                        </span>
-                                    </td>
-                                </tr>
-                            }
+                        @foreach (var rental in rentals.OrderByDescending(r => r.CreatedAt).Take(10))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="table-user">
+                                        <div class="user-avatar-sm">@rental.RenterName.Substring(0, 1)</div>
+                                        <span>@rental.RenterName</span>
+                                    </div>
+                                </td>
+                                <td class="table-car">@rental.Car?.Make @rental.Car?.Model</td>
+                                <td class="table-dates">
+                                    <div>@rental.StartDate.ToString("dd/MM/yy")</div>
+                                    <div class="date-separator">→</div>
+                                    <div>@rental.EndDate.ToString("dd/MM/yy")</div>
+                                </td>
+                                <td class="table-price">
+                                    @rental.TotalPrice.ToString("C0", new System.Globalization.CultureInfo("fr-FR"))
+                                </td>
+                                <td>
+                                    <span class="status-badge status-@rental.Status.ToString().ToLower()">
+                                        @GetStatusText(rental.Status)
+                                    </span>
+                                </td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -280,7 +311,7 @@
     </div>
 </div>
 
-@if (showCarModal)
+        @if (showCarModal)
 {
     <div class="modal-overlay" @onclick="CloseCarModal">
         <div class="modal-dialog" @onclick:stopPropagation="true">
@@ -363,9 +394,10 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: #f8fafc;
-        color: #1e293b;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+        color: #e2e8f0;
+        min-height: 100vh;
     }
 
     .luxury-navbar {
@@ -593,18 +625,31 @@
     }
 
     .section {
-        background: white;
-        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 20px;
         padding: 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+    }
+
+    .section:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 16px 48px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.75rem;
         gap: 1rem;
     }
 
@@ -612,20 +657,36 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 1.75rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #a855f7, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .section-title svg {
+        width: 28px;
+        height: 28px;
+        stroke: url(#gradient-stroke);
+        filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
     }
 
     .badge-count {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        color: #92400e;
-        padding: 0.375rem 0.875rem;
-        border-radius: 20px;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: #451a03;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
         font-size: 0.875rem;
-        font-weight: 600;
+        font-weight: 700;
+        min-width: 36px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+        animation: pulse-badge 2s ease-in-out infinite;
     }
-
+    @@keyframes pulse-badge {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
     .btn-primary {
         display: flex;
         align-items: center;
@@ -648,64 +709,105 @@
 
     .pending-rentals-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: 1.5rem;
     }
 
     .rental-request-card {
-        background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 18px;
         overflow: hidden;
-        border: 2px solid #fde68a;
-        transition: all 0.3s ease;
+        border: 1px solid rgb(0 0 0 / 15%);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        backdrop-filter: blur(10px);
+    }
+    .rental-request-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.05));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .rental-request-card:hover::before {
+        opacity: 1;
     }
 
     .rental-request-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(253, 224, 71, 0.3);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(168, 85, 247, 0.2);
+        border-color: rgba(168, 85, 247, 0.4);
     }
-
     .rental-car-image {
         width: 100%;
         height: 180px;
         object-fit: cover;
+        transition: transform 0.6s ease;
+        filter: brightness(0.95);
+    }
+    .rental-request-card:hover .rental-car-image {
+        transform: scale(1.08);
+        filter: brightness(1.05) contrast(1.1);
     }
 
     .rental-content {
-        padding: 1.25rem;
+        padding: 1.5rem;
     }
 
     .rental-title {
-        font-size: 1.125rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 0.75rem;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .rental-meta-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem 1rem;
+        margin-bottom: 1.25rem;
     }
 
     .meta-item {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        flex-direction: column;
         font-size: 0.875rem;
-        color: #475569;
     }
 
-    .meta-item.price {
-        color: #059669;
+    .meta-item strong {
+        color: #94a3b8;
+        font-weight: 500;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+
+    .meta-item span {
+        color: #0b1b31;
         font-weight: 600;
+    }
+
+    .meta-item.price span {
+        color: #10b981;
+        font-weight: 700;
+        font-size: 1.1rem;
     }
 
     .rental-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
+        padding: 0 1.5rem 1.5rem;
     }
 
     .action-btn {
@@ -713,33 +815,60 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        padding: 0.75rem;
+        padding: 0.875rem;
         border: none;
-        border-radius: 8px;
-        font-weight: 600;
+        border-radius: 12px;
+        font-weight: 700;
         font-size: 0.9375rem;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .action-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 0; height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+        pointer-events: none;
+    }
+
+    .action-btn:active::before {
+        width: 300px;
+        height: 300px;
     }
 
     .action-btn.approve {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #10b981, #059669);
         color: white;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
     }
 
     .action-btn.approve:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(16, 185, 129, 0.5);
     }
 
     .action-btn.reject {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color: white;
+        box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
     }
 
     .action-btn.reject:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(239, 68, 68, 0.5);
+    }
+    .action-btn svg {
+        transition: transform 0.3s ease;
+    }
+
+    .action-btn:hover svg {
+        transform: scale(1.2);
     }
 
     .cars-grid {
@@ -935,6 +1064,7 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        color: #000000ba;
     }
 
     .user-avatar-sm {
@@ -973,22 +1103,42 @@
 
     .status-badge {
         display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         padding: 0.375rem 0.875rem;
-        border-radius: 20px;
-        font-size: 0.8125rem;
-        font-weight: 600;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .status-pending {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        color: #92400e;
+    .status-badge.pending {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: #451a03;
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
     }
 
+    .status-badge::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    @@keyframes pulse-dot {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.6; }
+    }
     .status-approved {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
     }
-
+    .status-pending {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+    }
     .status-rejected {
         background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
         color: #991b1b;
@@ -1141,11 +1291,16 @@
             padding: 1rem;
             flex-wrap: wrap;
         }
-
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
         .user-name {
             display: none;
         }
-
+        .rental-actions {
+            grid-template-columns: 1fr;
+        }
         .btn-logout span {
             display: none;
         }
@@ -1166,7 +1321,9 @@
             flex-direction: column;
             align-items: flex-start;
         }
-
+        .rental-meta-grid {
+            grid-template-columns: 1fr;
+        }
         .pending-rentals-grid,
         .cars-grid {
             grid-template-columns: 1fr;
@@ -1174,6 +1331,9 @@
 
         .table-container {
             font-size: 0.875rem;
+        }
+        .section {
+            padding: 1.5rem;
         }
     }
 
@@ -1185,8 +1345,17 @@
             opacity: 0.5;
         }
     }
+    
+    
 </style>
-
+<svg width="0" height="0" style="position: absolute;">
+    <defs>
+        <linearGradient id="gradient-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="100%" stop-color="#3b82f6" />
+        </linearGradient>
+    </defs>
+</svg>
 @code {
     private List<Car> cars = new();
     private List<Rental> rentals = new();
@@ -1222,7 +1391,8 @@
             pendingRentals = await Http.GetFromJsonAsync<List<Rental>>("api/admin/rentals/rentals/pending") ?? new();
             stats = await Http.GetFromJsonAsync<AdminStats>("api/admin/rentals/stats");
             rentals = pendingRentals.ToList();
-            
+            rentals = await Http.GetFromJsonAsync<List<Rental>>("api/admin/rentals/rentals/all") ?? new();
+
             Console.WriteLine($" Loaded {cars.Count} cars, {pendingRentals.Count} pending rentals");
             Console.WriteLine($" Stats: TotalCars={stats?.TotalCars}, AvailableCars={stats?.AvailableCars}, TotalRentals={stats?.TotalRentals}, TotalRevenue={stats?.TotalRevenue}");
         }

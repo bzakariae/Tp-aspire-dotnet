@@ -516,9 +516,6 @@ namespace MyDotNetApp.ApiService.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("CarId1")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -541,18 +538,11 @@ namespace MyDotNetApp.ApiService.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("CarId1");
-
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Rentals");
                 });
@@ -644,25 +634,17 @@ namespace MyDotNetApp.ApiService.Migrations
 
             modelBuilder.Entity("LuxuryRental.Api.Models.Rental", b =>
                 {
-                    b.HasOne("LuxuryRental.Api.Models.Car", null)
+                    b.HasOne("LuxuryRental.Api.Models.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LuxuryRental.Api.Models.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId1");
-
-                    b.HasOne("LuxuryRental.Api.Models.User", null)
+                    b.HasOne("LuxuryRental.Api.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("LuxuryRental.Api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Car");
 

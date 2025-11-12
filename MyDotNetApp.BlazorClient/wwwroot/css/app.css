@@ -4,6 +4,26 @@
    CSS VARIABLES - Design System
    ======================================== */
 :root {
+    --gradient-purple-from: #6366f1;
+    --gradient-purple-to:   #8b5cf6;
+
+    --gradient-green-from:  #10b981;
+    --gradient-green-to:    #059669;
+
+    --gradient-blue-from:   #3b82f6;
+    --gradient-blue-to:     #2563eb;
+
+    --gradient-orange-from: #f59e0b;
+    --gradient-orange-to:   #d97706;
+
+    --gradient-gold-from:   #d4af37;
+    --gradient-gold-to:     #f0c84a;
+
+    --gradient-luxury-from: #a855f7;
+    --gradient-luxury-to:   #3b82f6;
+
+    --gradient-from: var(--gradient-gold-from);
+    --gradient-to:   var(--gradient-gold-to);
     /* Colors - Background */
     --color-background: #0a0a0a;
     --color-surface: #1a1a1a;
@@ -49,6 +69,7 @@
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
     --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.3);
     --shadow-glow-strong: 0 0 40px rgba(212, 175, 55, 0.5);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Spacing */
     --spacing-xs: 0.25rem;
