@@ -16,15 +16,26 @@ namespace MyDotNetApp.ApiService.Controllers
 
         public NotificationsController(RentalContext db) => _db = db;
 
+        private async Task<User?> GetCurrentUserAsync()
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value 
+                        ?? User.FindFirst("email")?.Value;
+
+            if (string.IsNullOrEmpty(email))
+                return null;
+
+            return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetNotifications()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+                return NotFound(new { message = "Utilisateur inexistant dans la base de données." });
 
             var notifications = await _db.Notifications
-                .Where(n => n.UserId == int.Parse(userId))
+                .Where(n => n.UserId == user.Id)
                 .Include(n => n.RelatedRental)
                     .ThenInclude(r => r!.Car)
                 .OrderByDescending(n => n.CreatedAt)
@@ -37,12 +48,12 @@ namespace MyDotNetApp.ApiService.Controllers
         [HttpGet("unread-count")]
         public async Task<IActionResult> GetUnreadCount()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+                return NotFound(new { message = "Utilisateur inexistant dans la base de données." });
 
             var count = await _db.Notifications
-                .Where(n => n.UserId == int.Parse(userId) && !n.IsRead)
+                .Where(n => n.UserId == user.Id && !n.IsRead)
                 .CountAsync();
 
             return Ok(new { count });
@@ -51,15 +62,15 @@ namespace MyDotNetApp.ApiService.Controllers
         [HttpPut("{id}/mark-read")]
         public async Task<IActionResult> MarkAsRead(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+                return NotFound(new { message = "Utilisateur inexistant dans la base de données." });
 
             var notification = await _db.Notifications
-                .FirstOrDefaultAsync(n => n.Id == id && n.UserId == int.Parse(userId));
+                .FirstOrDefaultAsync(n => n.Id == id && n.UserId == user.Id);
 
             if (notification == null)
-                return NotFound();
+                return NotFound(new { message = "Notification introuvable pour cet utilisateur." });
 
             notification.IsRead = true;
             await _db.SaveChangesAsync();
@@ -70,12 +81,12 @@ namespace MyDotNetApp.ApiService.Controllers
         [HttpPut("mark-all-read")]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+                return NotFound(new { message = "Utilisateur inexistant dans la base de données." });
 
             await _db.Notifications
-                .Where(n => n.UserId == int.Parse(userId) && !n.IsRead)
+                .Where(n => n.UserId == user.Id && !n.IsRead)
                 .ExecuteUpdateAsync(s => s.SetProperty(n => n.IsRead, true));
 
             return Ok();

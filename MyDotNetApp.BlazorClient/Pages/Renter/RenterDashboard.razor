@@ -1243,34 +1243,22 @@
     }
 
     protected override async Task OnInitializedAsync()
-    {  /*
+    {
         var authState = await AuthStateTask;
         var user = authState.User;
 
-        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        if (user.Identity?.IsAuthenticated == true)
         {
-            // pas connecté → on envoie vers le login OIDC
-            Navigation.NavigateTo("authentication/login?returnUrl=/renter", forceLoad: true);
-            return;
+            userName =
+                user.Identity.Name
+                ?? user.FindFirst("preferred_username")?.Value
+                ?? user.FindFirst(ClaimTypes.Email)?.Value
+                ?? "Utilisateur";
         }
-
-        // Rôle "Renter" via les claims Keycloak (à adapter selon ta conf)
-        if (!user.IsInRole("Renter"))
-        {
-            // soit tu bloques, soit tu rediriges ailleurs
-            Navigation.NavigateTo("/login", forceLoad: true);
-            return;
-        }
-
-        // Récup nom depuis les claims
-        userName =
-            user.Identity.Name
-            ?? user.FindFirst("preferred_username")?.Value
-            ?? user.FindFirst(ClaimTypes.Email)?.Value
-            ?? "Utilisateur";*/
 
         await LoadData();
     }
+
 
 
     private async Task LoadData()
