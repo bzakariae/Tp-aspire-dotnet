@@ -1,0 +1,523 @@
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+
+<div class="hero-container">
+    <div class="mesh-gradient"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="hero-content">
+        <div class="content-wrapper">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                <span class="badge-text">Collection Premium 2025</span>
+            </div>
+
+            <h1 class="hero-title">
+                <span class="title-line">Vivez l'expérience</span>
+                <span class="title-line gradient-text">du luxe sans limite</span>
+            </h1>
+            
+            <p class="hero-subtitle">
+                Explorez notre collection exclusive de véhicules d’exception.<br/>
+                où performance, prestige et innovation se rencontrent pour redéfinir la conduite haut de gamme.
+            </p>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Véhicules</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Marques</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Service</div>
+                </div>
+            </div>
+
+            <div class="cta-container">
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <button class="cta-button primary"
+                                @onclick='() => Navigation.NavigateTo("/login")'>
+                            <span class="button-content">
+                                <span class="button-icon">→</span>
+                                <span class="button-text">Se connecter</span>
+                            </span>
+                            <span class="button-glow"></span>
+                        </button>
+                        <button class="cta-button secondary"
+                                @onclick='() => Navigation.NavigateTo("/login")'>
+                            <span class="button-text">En savoir plus</span>
+                        </button>
+                    </NotAuthorized>
+
+                    <Authorized Context="auth">
+                        @{
+                            bool isAdmin = auth.User.Claims.Any(c =>
+                                c.Type == "roles" && c.Value.Contains("ROLE_RENTAL_MANAGER"));
+
+                            bool isCustomer = auth.User.Claims.Any(c =>
+                                c.Type == "roles" && c.Value.Contains("ROLE_RENTAL_CUSTOMER"));
+                        }
+                        @if (isAdmin)
+                        {
+                            <button class="cta-button primary"
+                                    @onclick='() => Navigation.NavigateTo("/admin")'>
+                                <span class="button-content">
+                                    <span class="button-icon">⚡</span>
+                                    <span class="button-text">Tableau de bord Admin</span>
+                                </span>
+                                <span class="button-glow"></span>
+                            </button>
+                        }
+                        else if (isCustomer)
+                        {
+                            <button class="cta-button primary"
+                                    @onclick='() => Navigation.NavigateTo("/renter")'>
+                                <span class="button-content">
+                                    <span class="button-icon">🏎️</span>
+                                    <span class="button-text">Explorer les voitures</span>
+                                </span>
+                                <span class="button-glow"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <p class="text-warning">Rôle non reconnu</p>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Réservation Instantanée</h3>
+                    <p>En moins de 2 minutes</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Assurance Premium</h3>
+                    <p>Protection complète incluse</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🌟</div>
+                    <h3>Service VIP</h3>
+                    <p>Livraison à domicile</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-element element-1"></div>
+    <div class="floating-element element-2"></div>
+    <div class="floating-element element-3"></div>
+</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .hero-container {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000000;
+        overflow: hidden;
+        padding: 2rem;
+    }
+
+    .mesh-gradient {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(at 0% 0%, rgba(255, 59, 48, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(255, 149, 0, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(255, 45, 85, 0.15) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(191, 90, 242, 0.15) 0px, transparent 50%);
+        animation: meshMove 20s ease-in-out infinite;
+    }
+
+    @@keyframes meshMove {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(5deg); }
+    }
+
+    .grid-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 100px 100px;
+        animation: gridScroll 20s linear infinite;
+    }
+
+    @@keyframes gridScroll {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(100px); }
+    }
+
+    .floating-element {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.3;
+        animation: float 15s infinite ease-in-out;
+    }
+
+    .element-1 {
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .element-2 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        bottom: 20%;
+        right: 15%;
+        animation-delay: 5s;
+    }
+
+    .element-3 {
+        width: 350px;
+        height: 350px;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        top: 50%;
+        left: 50%;
+        animation-delay: 10s;
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translate(0, 0); }
+        33% { transform: translate(30px, -30px); }
+        66% { transform: translate(-20px, 20px); }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        margin-bottom: 2rem;
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .badge-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .badge-text {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .title-line {
+        display: block;
+        color: #ffffff;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% auto;
+        animation: gradientShift 3s linear infinite, fadeInUp 1s ease-out 0.4s both;
+    }
+
+    @@keyframes gradientShift {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.6;
+        margin-bottom: 3rem;
+        max-width: 600px;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .stats-container {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding: 1.5rem 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        animation: fadeInUp 1s ease-out 0.8s both;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .stat-divider {
+        width: 1px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .cta-container {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 4rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 1s both;
+    }
+
+    .cta-button {
+        position: relative;
+        padding: 1rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .cta-button.primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .cta-button.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
+    }
+
+    .cta-button.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cta-button.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .button-content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .button-icon {
+        font-size: 1.2rem;
+        transition: transform 0.3s;
+    }
+
+    .cta-button:hover .button-icon {
+        transform: translateX(3px);
+    }
+
+    .button-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+    }
+
+    .cta-button:hover .button-glow {
+        opacity: 1;
+        animation: glowMove 1.5s infinite;
+    }
+
+    @@keyframes glowMove {
+        0% { transform: translate(-50%, -50%); }
+        50% { transform: translate(-30%, -30%); }
+        100% { transform: translate(-50%, -50%); }
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        animation: fadeInUp 1s ease-out 1.2s both;
+    }
+
+    .feature-box {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-box:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    .feature-box:nth-child(1) .feature-icon { animation-delay: 0s; }
+    .feature-box:nth-child(2) .feature-icon { animation-delay: 0.3s; }
+    .feature-box:nth-child(3) .feature-icon { animation-delay: 0.6s; }
+
+    @@keyframes iconFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    .feature-box h3 {
+        color: white;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-box p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.875rem;
+    }
+
+    @@media (max-width: 768px) {
+        .stats-container {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-divider {
+            width: 40px;
+            height: 1px;
+        }
+
+        .cta-container {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .cta-button {
+            width: 100%;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+

@@ -1,0 +1,103 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
+        "projectName": "MyDotNetApp.AppHost",
+        "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
+        "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.AppHost\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Aspire.Dashboard.Sdk.win-x64": {
+              "target": "Package",
+              "version": "[9.5.1, )",
+              "autoReferenced": true
+            },
+            "Aspire.Hosting.AppHost": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
+            "Aspire.Hosting.Keycloak": {
+              "target": "Package",
+              "version": "[9.5.2-preview.1.25522.3, )"
+            },
+            "Aspire.Hosting.Orchestration.win-x64": {
+              "target": "Package",
+              "version": "[9.5.1, )",
+              "autoReferenced": true
+            },
+            "Aspire.Hosting.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
+            "Aspire.Hosting.SqlServer": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
+            "Aspire.Npgsql": {
+              "target": "Package",
+              "version": "[9.5.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
