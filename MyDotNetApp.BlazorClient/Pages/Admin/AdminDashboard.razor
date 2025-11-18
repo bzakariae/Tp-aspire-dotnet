@@ -152,12 +152,13 @@
 
                                         <div class="meta-item">
                                             <strong>Prix / jour :</strong>
-                                            <span>@rental.Car?.PricePerDay.ToString("C0")</span>
+                                            <span>@rental.Car?.PricePerDay.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"))</span>
                                         </div>
 
                                         <div class="meta-item price">
                                             <strong>Total :</strong>
-                                            <span>@rental.TotalPrice.ToString("C0")</span>
+                                            <span>@rental.TotalPrice.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("fr-FR"))</span>
+                                            
                                         </div>
 
                                         <div class="meta-item">
