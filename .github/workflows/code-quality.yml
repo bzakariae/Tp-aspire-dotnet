@@ -1,0 +1,61 @@
+name: Code Quality & Linting
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+
+  code-quality-api:
+    name: API Code Quality
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./MyDotNetApp.ApiService
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Check code formatting
+      run: dotnet format --verify-no-changes --verbosity diagnostic
+
+    - name: Run code analysis
+      run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
+
+  code-quality-blazor:
+    name: Blazor Code Quality
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./MyDotNetApp.BlazorClient
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Check code formatting
+      run: dotnet format --verify-no-changes --verbosity diagnostic
+
+    - name: Run code analysis
+      run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
