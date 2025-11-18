@@ -18,7 +18,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
         public string FullName { get; set; } = "";
 
         [Required]
-        public string Role { get; set; } = "Renter"; 
+        public string Role { get; set; } = "Renter";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

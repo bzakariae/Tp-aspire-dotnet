@@ -40,7 +40,7 @@ namespace MyDotNetApp.ApiService.Services
             sb.AppendLine("Signature du locataire: _________________");
             sb.AppendLine();
             sb.AppendLine("Signature du loueur: _________________");
-            
+
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(sb.ToString()));
         }
 
@@ -65,10 +65,10 @@ namespace MyDotNetApp.ApiService.Services
             sb.AppendLine("─────────────────────────────────────────────────────────");
             sb.AppendLine($"Véhicule: {rental.Car?.Make} {rental.Car?.Model}");
             sb.AppendLine($"Période: {rental.StartDate:dd/MM/yyyy} - {rental.EndDate:dd/MM/yyyy}");
-            
+
             var days = (rental.EndDate.ToDateTime(TimeOnly.MinValue) - rental.StartDate.ToDateTime(TimeOnly.MinValue)).Days;
             var pricePerDay = rental.Car?.PricePerDay ?? 0;
-            
+
             sb.AppendLine();
             sb.AppendLine("TARIFICATION:");
             sb.AppendLine($"Location ({days} jours × {pricePerDay:C} EUR)     {rental.TotalPrice:C} EUR");
@@ -80,7 +80,7 @@ namespace MyDotNetApp.ApiService.Services
             sb.AppendLine("Mode de paiement: Carte bancaire");
             sb.AppendLine();
             sb.AppendLine("Merci de votre confiance !");
-            
+
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(sb.ToString()));
         }
     }

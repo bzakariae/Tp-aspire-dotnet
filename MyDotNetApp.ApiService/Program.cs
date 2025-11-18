@@ -6,8 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MyDotNetApp.ApiService;
-using Microsoft.AspNetCore.Authentication; 
-using System.Text.Json;  
+using Microsoft.AspNetCore.Authentication;
+using System.Text.Json;
 using MyDotNetApp.ApiService.Services;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -110,7 +110,7 @@ app.UseRouting();
 app.UseCors("AllowBlazorClient");
 
 app.UseAuthentication();
-app.UseAuthorization(); 
+app.UseAuthorization();
 
 app.MapControllers(); // mets [Authorize] sur tes endpoints protégés
 

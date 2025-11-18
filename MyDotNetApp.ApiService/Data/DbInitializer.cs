@@ -14,7 +14,7 @@ namespace MyDotNetApp.ApiService.Data
             try
             {
                 logger.LogInformation("Vérification de la base de données...");
-                
+
                 var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
                 if (pendingMigrations.Any())
                 {
@@ -49,7 +49,7 @@ namespace MyDotNetApp.ApiService.Data
 
                 var carCount = await context.Cars.CountAsync();
                 logger.LogInformation($"✓ Nombre de voitures dans la base: {carCount}");
-                
+
                 logger.LogInformation("========================================");
                 logger.LogInformation("Base de données prête !");
                 logger.LogInformation("========================================");

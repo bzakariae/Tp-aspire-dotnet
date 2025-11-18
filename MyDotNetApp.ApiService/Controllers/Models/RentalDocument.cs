@@ -8,7 +8,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
 
         [Required]
         public int RentalId { get; set; }
-        
+
         public Rental? Rental { get; set; }
 
         [Required]
