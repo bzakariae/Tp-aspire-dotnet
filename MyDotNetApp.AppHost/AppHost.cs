@@ -5,8 +5,9 @@ var builder = DistributedApplication.CreateBuilder(args);
     
 
 var keycloak = builder
-    .AddKeycloak("keycloak", 8080)   
-    .WithDataVolume();   
+    .AddKeycloak("keycloak", 8090)   // <-- nouveau port host
+    .WithDataVolume();
+
     
 var postgres = builder.AddPostgres("postgres").WithDataVolume();
 var postgresdb = postgres.AddDatabase("mydotnetdb");

@@ -5464,32 +5464,33 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User1\\.nuget\\packages\\": {}
+    "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.ApiService\\MyDotNetApp.ApiService.csproj",
+      "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.ApiService\\MyDotNetApp.ApiService.csproj",
       "projectName": "MyDotNetApp.ApiService",
-      "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.ApiService\\MyDotNetApp.ApiService.csproj",
-      "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.ApiService\\obj\\",
+      "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.ApiService\\MyDotNetApp.ApiService.csproj",
+      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.ApiService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.ServiceDefaults\\MyDotNetApp.ServiceDefaults.csproj": {
-              "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet-keycloak\\MyDotNetApp.ServiceDefaults\\MyDotNetApp.ServiceDefaults.csproj"
+            "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.ServiceDefaults\\MyDotNetApp.ServiceDefaults.csproj": {
+              "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.ServiceDefaults\\MyDotNetApp.ServiceDefaults.csproj"
             }
           }
         }
@@ -5566,7 +5567,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

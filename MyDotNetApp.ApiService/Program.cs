@@ -33,12 +33,12 @@ builder.Services.AddDbContext<RentalContext>(opt => opt.UseNpgsql(connection));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "http://localhost:8080/realms/car-rental";
+        options.Authority = "http://localhost:8090/realms/car-rental";
         options.RequireHttpsMetadata = false; // dev
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "http://localhost:8080/realms/car-rental",
+            ValidIssuer = "http://localhost:8090/realms/car-rental",
             ValidateAudience = false, // ok en dev
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
@@ -58,7 +58,7 @@ builder.Services.AddAuthorization(o =>
 builder.Services.AddScoped<JwtService>(); // garde si tu l’utilises ailleurs (sinon, tu peux le retirer)
 
 builder.Services.AddHttpClient();
-
+builder.Services.AddHttpClient<KeycloakAdminService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 

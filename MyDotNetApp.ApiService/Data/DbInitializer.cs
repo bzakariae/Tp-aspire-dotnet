@@ -13,54 +13,59 @@ namespace MyDotNetApp.ApiService.Data
 
             try
             {
-                logger.LogInformation("Vérification de la base de données...");
-                
-                var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-                if (pendingMigrations.Any())
-                {
-                    logger.LogInformation($"Application de {pendingMigrations.Count()} migration(s) en attente...");
-                    await context.Database.MigrateAsync();
-                    logger.LogInformation("Migrations appliquées avec succès");
-                }
-                else
-                {
-                    await context.Database.EnsureCreatedAsync();
-                    logger.LogInformation("Base de données vérifiée");
-                }
+                logger.LogInformation("Application des migrations EF...");
+                await context.Database.MigrateAsync();
+                logger.LogInformation("Migrations appliquées avec succès");
 
-                if (!await context.Users.AnyAsync(u => u.Email == "admin@yassine.com"))
+                // ====== Seed admin ======
+                if (!await context.Users.AnyAsync(u => u.Email == "admin@car-rental.com"))
                 {
                     var admin = new User
                     {
-                        Email = "admin@yassine.com",
-                        PasswordHash = "ADMINADMIN",
-                        FullName = "Administrator",
+                        Email = "admin@car-rental.com",
+                        FullName = "Admin CarRental",
                         Role = "Admin",
+                        KeycloakId = "",
                         CreatedAt = DateTime.UtcNow
                     };
 
                     context.Users.Add(admin);
-                    await context.SaveChangesAsync();
+                    logger.LogInformation("✓ Compte administrateur créé : admin@car-rental.com");
                 }
                 else
                 {
-                    logger.LogInformation("✓ Compte administrateur déjà existant");
+                    logger.LogInformation("✓ Compte administrateur déjà existant (admin@car-rental.com)");
                 }
+
+                // ====== Seed client ======
+                if (!await context.Users.AnyAsync(u => u.Email == "client1@gmail.com"))
+                {
+                    var client = new User
+                    {
+                        Email = "client1@gmail.com",
+                        FullName = "Client Démo",
+                        Role = "Client",
+                        KeycloakId = "",
+                        CreatedAt = DateTime.UtcNow
+                    };
+
+                    context.Users.Add(client);
+                    logger.LogInformation("✓ Compte client créé : client1@gmail.com");
+                }
+                else
+                {
+                    logger.LogInformation("✓ Compte client déjà existant (client1@gmail.com)");
+                }
+
+                await context.SaveChangesAsync();
 
                 var carCount = await context.Cars.CountAsync();
                 logger.LogInformation($"✓ Nombre de voitures dans la base: {carCount}");
-                
-                logger.LogInformation("========================================");
                 logger.LogInformation("Base de données prête !");
-                logger.LogInformation("========================================");
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Une erreur s'est produite lors de l'initialisation de la base de données");
-                logger.LogError("Conseil: Si les tables existent déjà, supprimez la migration et recréez-la:");
-                logger.LogError("  1. Supprimez le dossier Migrations/");
-                logger.LogError("  2. dotnet ef migrations add InitialCreate");
-                logger.LogError("  3. dotnet run");
                 throw;
             }
         }

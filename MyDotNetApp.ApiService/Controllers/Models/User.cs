@@ -7,20 +7,18 @@ namespace MyDotNetApp.ApiService.Controllers.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required, EmailAddress]
         public string Email { get; set; } = "";
-
-        [Required]
-        public string PasswordHash { get; set; } = "";
 
         [Required]
         public string FullName { get; set; } = "";
 
         [Required]
-        public string Role { get; set; } = "Renter"; 
+        public string Role { get; set; } = "Renter";
+
+        public string KeycloakId { get; set; } = ""; 
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
     }
+
 }

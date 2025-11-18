@@ -15,7 +15,7 @@ public class KeycloakAuthService
     private readonly CustomAuthStateProvider _authStateProvider;
     private readonly ILocalStorageService _storage;
     private readonly NavigationManager _nav;
-    private const string Authority = "http://localhost:8080/realms/car-rental";
+    private const string Authority = "http://localhost:8090/realms/car-rental";
 
     private const string AccessTokenKey = "access_token";
     private const string RefreshTokenKey = "refresh_token";

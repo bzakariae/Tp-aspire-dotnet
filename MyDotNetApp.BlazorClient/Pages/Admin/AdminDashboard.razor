@@ -6,7 +6,6 @@
 @using System.Security.Claims
 @using MyDotNetApp.BlazorClient.Models
 
-
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
@@ -366,10 +365,21 @@
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            Nom complet
+                            Prenom
                         </label>
-                        <InputText @bind-Value="newAdmin.FullName" class="form-control" placeholder="Jean Dupont" />
-                        <ValidationMessage For="@(() => newAdmin.FullName)" class="validation-message" />
+                        <InputText @bind-Value="newAdmin.FirstName" class="form-control" placeholder="Jean" />
+                        <ValidationMessage For="@(() => newAdmin.FirstName)" class="validation-message" />
+                        <label class="form-label">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Nom
+                        </label>
+                        <InputText @bind-Value="newAdmin.LastName"  class="form-control" placeholder="Dupont" />
+                       
+                        <ValidationMessage For="@(() => newAdmin.LastName)"  class="validation-message" />
+
                     </div>
 
                     <div class="form-group">
@@ -1858,41 +1868,57 @@
         adminMessage = "";
     }
 
-    @* Frontend-only admin creation (no backend call) *@
+    
     private async Task CreateAdmin()
     {
-        // Simulation frontend uniquement - pas d'appel API
-        await Task.Delay(500); // Simule un délai de traitement
-        
-        if (string.IsNullOrWhiteSpace(newAdmin.Email) || 
-            string.IsNullOrWhiteSpace(newAdmin.FullName) || 
+        adminMessage = "";
+
+        // 1) Validations simples côté UI
+        if (string.IsNullOrWhiteSpace(newAdmin.Email) ||
+            string.IsNullOrWhiteSpace(newAdmin.FirstName) ||
+            string.IsNullOrWhiteSpace(newAdmin.LastName) ||
             string.IsNullOrWhiteSpace(newAdmin.Password))
         {
             adminMessage = "Erreur : Tous les champs sont requis.";
             return;
         }
 
-        // Validation simple de l'email
         if (!newAdmin.Email.Contains("@"))
         {
             adminMessage = "Erreur : Format d'email invalide.";
             return;
         }
 
-        // Validation du mot de passe
         if (newAdmin.Password.Length < 6)
         {
             adminMessage = "Erreur : Le mot de passe doit contenir au moins 6 caractères.";
             return;
         }
 
-        // Simulation de succès
-        adminMessage = $"✓ Admin '{newAdmin.FullName}' créé avec succès !";
-        
-        // Réinitialiser le formulaire après 2 secondes
-        await Task.Delay(2000);
-        CloseCreateAdminModal();
+        // 2) Appel API vers ton AdminController
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/admin/create", newAdmin);
+
+            if (response.IsSuccessStatusCode)
+            {
+                adminMessage = $"✓ Admin '{newAdmin.FirstName}' créé avec succès !";
+                newAdmin = new RegisterUserRequest();
+                CloseCreateAdminModal();
+                await LoadData(); // si tu veux recharger les données
+            }
+            else
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                adminMessage = $"Erreur API : {response.StatusCode} - {body}";
+            }
+        }
+        catch (Exception ex)
+        {
+            adminMessage = $"Erreur : {ex.Message}";
+        }
     }
+
 
 
     private void CloseCarModal()
@@ -2014,6 +2040,8 @@
     {
         public string Email { get; set; } = "";
         public string Password { get; set; } = "";
-        public string FullName { get; set; } = "";
+        public string FirstName { get; set; } = "";
+        public string LastName  { get; set; } = "";
+
     }
 }
