@@ -1873,7 +1873,7 @@
     {
         adminMessage = "";
 
-        // 1) Validations simples côté UI
+        
         if (string.IsNullOrWhiteSpace(newAdmin.Email) ||
             string.IsNullOrWhiteSpace(newAdmin.FirstName) ||
             string.IsNullOrWhiteSpace(newAdmin.LastName) ||
@@ -1895,7 +1895,7 @@
             return;
         }
 
-        // 2) Appel API vers ton AdminController
+        // 2) Appel API vers AdminController
         try
         {
             var response = await Http.PostAsJsonAsync("api/admin/create", newAdmin);
@@ -1905,7 +1905,7 @@
                 adminMessage = $"✓ Admin '{newAdmin.FirstName}' créé avec succès !";
                 newAdmin = new RegisterUserRequest();
                 CloseCreateAdminModal();
-                await LoadData(); // si tu veux recharger les données
+                await LoadData(); 
             }
             else
             {

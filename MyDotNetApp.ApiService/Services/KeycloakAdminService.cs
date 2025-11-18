@@ -14,8 +14,16 @@ public class KeycloakAdminService
         _http = http;
         _config = config;
     }
+    public async Task<string> CreateAdminAsync(string email, string firstName, string lastName, string password)
+    {
+        return await CreateUserWithRoleAsync(email, firstName, lastName, password, "ROLE_RENTAL_MANAGER");
+    }
 
-    public async Task<string> CreateUserAsync(string email, string firstName,string lastName, string password)
+    public async Task<string> CreateCustomerAsync(string email, string firstName, string lastName, string password)
+    {
+        return await CreateUserWithRoleAsync(email, firstName, lastName, password, "ROLE_RENTAL_CUSTOMER");
+    }
+    public async Task<string> CreateUserWithRoleAsync(string email, string firstName,string lastName, string password,string roleName)
     {
         var baseUrl = _config["Keycloak:BaseUrl"];   
         var realm   = _config["Keycloak:Realm"];     
@@ -39,6 +47,12 @@ public class KeycloakAdminService
             $"{baseUrl}/admin/realms/{realm}/users",
             new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json"));
 
+        if (resp.StatusCode == System.Net.HttpStatusCode.Conflict)
+        {
+           
+            throw new InvalidOperationException("Cet utilisateur existe déjà dans Keycloak.");
+        }
+
         resp.EnsureSuccessStatusCode();
 
         var location = resp.Headers.Location!.ToString();
@@ -56,7 +70,7 @@ public class KeycloakAdminService
             new StringContent(JsonSerializer.Serialize(passPayload), Encoding.UTF8, "application/json"));
 
         passResp.EnsureSuccessStatusCode();
-        await AssignRealmRoleAsync(userId, "ROLE_RENTAL_MANAGER");
+        await AssignRealmRoleAsync(userId, roleName);
         return userId;
     }
 

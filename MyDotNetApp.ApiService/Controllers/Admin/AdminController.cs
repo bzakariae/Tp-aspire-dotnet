@@ -2,9 +2,9 @@ namespace MyDotNetApp.ApiService.Controllers.Admin;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using MyDotNetApp.ApiService.Data;                 // RentalContext
-using MyDotNetApp.ApiService.Services;            // KeycloakAdminService
-using MyDotNetApp.ApiService.Controllers.Models.Dtos;  // User + RegisterUserRequest (si tu les mets là)
+using MyDotNetApp.ApiService.Data;                
+using MyDotNetApp.ApiService.Services;           
+using MyDotNetApp.ApiService.Controllers.Models.Dtos;  
 using MyDotNetApp.ApiService.Controllers.Models;
 
 
@@ -26,7 +26,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> CreateAdmin([FromBody] RegisterUserRequest req)
     {
         // 1) Créer l’utilisateur dans Keycloak avec le role admin
-        var keycloakId = await _kc.CreateUserAsync(req.Email, req.FirstName,req.LastName, req.Password);
+        var keycloakId = await _kc.CreateAdminAsync(req.Email, req.FirstName,req.LastName, req.Password);
 
         // 2) Sauvegarder dans la DB
         var user = new User
