@@ -2,9 +2,9 @@ name: Code Quality & Linting
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, keycloak_v1 ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, keycloak_v1 ]
 
 jobs:
 
