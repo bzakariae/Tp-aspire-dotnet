@@ -15,5 +15,5 @@ public class MyDotNetApp_ApiService : global::Aspire.Hosting.IProjectMetadata
     /// <summary>
     /// The path to the MyDotNetApp_ApiService project.
     /// </summary>
-    public string ProjectPath => """C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.ApiService\MyDotNetApp.ApiService.csproj""";
+    public string ProjectPath => """C:\Users\User1\Tp-aspire-dotnet-feature-keycloak_v1\MyDotNetApp.ApiService\MyDotNetApp.ApiService.csproj""";
 }

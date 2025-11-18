@@ -11,23 +11,21 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("403b1190-a659-47b2-a64a-bf21e81af553")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\Lenovo\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\" +
-    "dcp.exe"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\Lenovo\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\" +
-    "ext\\"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("C:\\Users\\Lenovo\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\" +
-    "ext\\bin\\"))]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp" +
-    "\\MyDotNetApp.AppHost"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\User1\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\d" +
+    "cp.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\User1\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\e" +
+    "xt\\"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("C:\\Users\\User1\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.1\\tools\\e" +
+    "xt\\bin\\"))]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\User1\\Tp-aspire-dotnet-feature-keycloak_v1\\MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "MyDotNetApp.AppHost.csproj")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\Lenovo\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\9.5.1\\tools\\Aspire.D" +
-    "ashboard.exe"))]
-[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp" +
-    "\\MyDotNetApp.AppHost\\obj\\"))]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\User1\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\9.5.1\\tools\\Aspire.Da" +
+    "shboard.exe"))]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", "C:\\Users\\User1\\Tp-aspire-dotnet-feature-keycloak_v1\\MyDotNetApp.AppHost\\obj\\")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5310007e04b7620ef13ef3af756a315a3d183c78")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f294562d58beab0b8709e13e8df85899c8c0c32")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

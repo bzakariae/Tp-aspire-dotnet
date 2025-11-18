@@ -17,5 +17,5 @@ public class MyDotNetApp_AppHost
     /// <summary>
     /// The path to the Aspire Host project.
     /// </summary>
-    public static string ProjectPath => """C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.AppHost""";
+    public static string ProjectPath => """C:\Users\User1\Tp-aspire-dotnet-feature-keycloak_v1\MyDotNetApp.AppHost""";
 }
