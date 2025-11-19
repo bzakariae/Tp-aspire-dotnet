@@ -3351,10 +3351,10 @@ C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetAp
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\v710dtotu9-qe75a9vfqn.gz
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\jqko4p58my-9o45ky8ejm.gz
 C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\l606o94aei-itwjppbl6y.gz
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.6ee9o0w1l4.wasm
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.i6xftxsjo5.pdb
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.6ee9o0w1l4.wasm.gz
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.i6xftxsjo5.pdb.gz
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-6ee9o0w1l4.gz
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-i6xftxsjo5.gz
-C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-ap7hj579tm.gz
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.anbfddhm8q.wasm
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.4ghiab8rlk.pdb
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.anbfddhm8q.wasm.gz
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.4ghiab8rlk.pdb.gz
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-anbfddhm8q.gz
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-4ghiab8rlk.gz
+C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-9hr1s0zyc6.gz

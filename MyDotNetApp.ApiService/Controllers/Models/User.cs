@@ -14,7 +14,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
         public string FullName { get; set; } = "";
 
         [Required]
-        public string Role { get; set; } = "Renter";
+        public string Role { get; set; } = "client";
 
         public string KeycloakId { get; set; } = ""; 
 

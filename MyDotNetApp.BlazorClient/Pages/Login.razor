@@ -1497,11 +1497,11 @@
         // Priorité à l’admin si l’utilisateur a plusieurs rôles
         if (user.IsInRole(ROLE_ADMIN))
         {
-            Navigation.NavigateTo("/admin");    // pas de forceLoad
+            Navigation.NavigateTo("/");    // pas de forceLoad
         }
         else if (user.IsInRole(ROLE_CLIENT))
         {
-            Navigation.NavigateTo("/renter");
+            Navigation.NavigateTo("/");
         }
         else
         {

@@ -1220,6 +1220,7 @@
     private string userName = string.Empty;
     private string searchQuery = "";
     private string filterClass = "";
+    private string firstName= string.Empty;
 
     private List<Car> FilteredCars
     {
@@ -1250,11 +1251,20 @@
 
         if (user.Identity?.IsAuthenticated == true)
         {
-            userName =
-                user.Identity.Name
-                ?? user.FindFirst("preferred_username")?.Value
-                ?? user.FindFirst(ClaimTypes.Email)?.Value
-                ?? "Utilisateur";
+           firstName = user.FindFirst(ClaimTypes.GivenName)?.Value 
+                            ?? user.FindFirst("given_name")?.Value;
+           if (!string.IsNullOrWhiteSpace(firstName) )
+           {
+               userName = firstName.Trim();
+           }
+           else
+           {
+               userName =
+                   user.Identity.Name
+                   ?? user.FindFirst("preferred_username")?.Value
+                   ?? user.FindFirst(ClaimTypes.Email)?.Value
+                   ?? "Utilisateur";
+           }
         }
 
         await LoadData();

@@ -12,7 +12,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
         public Rental? Rental { get; set; }
 
         [Required]
-        public string DocumentType { get; set; } = ""; // "Contract", "Invoice"
+        public string DocumentType { get; set; } = ""; 
 
         [Required]
         public string FileName { get; set; } = "";
