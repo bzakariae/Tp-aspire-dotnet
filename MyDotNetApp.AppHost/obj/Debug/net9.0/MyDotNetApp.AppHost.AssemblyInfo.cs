@@ -27,7 +27,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+591f032d2d7da470c23731e650c67fb6d8427461")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+867aa68ee37711585296439a165a3980070ae274")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyDotNetApp.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
