@@ -1,5 +1,6 @@
 using MyDotNetApp.ApiService.Controllers.Models;
 using Microsoft.EntityFrameworkCore;
+using MyDotNetApp.ApiService.Services;
 
 namespace MyDotNetApp.ApiService.Data
 {
@@ -10,22 +11,28 @@ namespace MyDotNetApp.ApiService.Data
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<RentalContext>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
+            var keycloakAdmin = scope.ServiceProvider.GetRequiredService<KeycloakAdminService>();
             try
             {
                 logger.LogInformation("Application des migrations EF...");
                 await context.Database.MigrateAsync();
                 logger.LogInformation("Migrations appliquées avec succès");
-
-                // ====== Seed admin ======
-                if (!await context.Users.AnyAsync(u => u.Email == "admin@car-rental.com"))
+                const string adminEmail = "admin@car-rental.com";
+                // ====== Seed default admin ======
+                if (!await context.Users.AnyAsync(u => u.Email == adminEmail))
                 {
+                    var keycloakId = await keycloakAdmin.CreateAdminAsync(
+                        email: adminEmail,
+                        firstName: "Admin",
+                        lastName: "CarRental",
+                        password: "admin-car" 
+                    );
                     var admin = new User
                     {
-                        Email = "admin@car-rental.com",
+                        Email =adminEmail,
                         FullName = "Admin CarRental",
                         Role = "Admin",
-                        KeycloakId = "",
+                        KeycloakId = keycloakId,
                         CreatedAt = DateTime.UtcNow
                     };
 
@@ -34,27 +41,7 @@ namespace MyDotNetApp.ApiService.Data
                 }
                 else
                 {
-                    logger.LogInformation("✓ Compte administrateur déjà existant (admin@car-rental.com)");
-                }
-
-                // ====== Seed client ======
-                if (!await context.Users.AnyAsync(u => u.Email == "client1@gmail.com"))
-                {
-                    var client = new User
-                    {
-                        Email = "client1@gmail.com",
-                        FullName = "Client Démo",
-                        Role = "Client",
-                        KeycloakId = "",
-                        CreatedAt = DateTime.UtcNow
-                    };
-
-                    context.Users.Add(client);
-                    logger.LogInformation("✓ Compte client créé : client1@gmail.com");
-                }
-                else
-                {
-                    logger.LogInformation("✓ Compte client déjà existant (client1@gmail.com)");
+                    logger.LogInformation("✓ Compte administrateur déjà existant ");
                 }
 
                 await context.SaveChangesAsync();

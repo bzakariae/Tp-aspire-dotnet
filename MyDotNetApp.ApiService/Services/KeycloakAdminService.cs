@@ -106,14 +106,14 @@ public class KeycloakAdminService
         _http.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
-        // 1. Récupérer le rôle tel quel
+        
         var roleResp = await _http.GetAsync(
             $"{baseUrl}/admin/realms/{realm}/roles/{roleName}");
         roleResp.EnsureSuccessStatusCode();
 
         var roleJson = await roleResp.Content.ReadAsStringAsync();
 
-        // 2. Le renvoyer directement dans un tableau JSON
+        
         var body = "[" + roleJson + "]";
 
         var assignResp = await _http.PostAsync(
