@@ -3407,10 +3407,10 @@ C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compre
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\v710dtotu9-qe75a9vfqn.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\jqko4p58my-9o45ky8ejm.gz
 C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\l606o94aei-itwjppbl6y.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.gd9iutq5jh.wasm
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.zuvk8zfv6c.pdb
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.gd9iutq5jh.wasm.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.zuvk8zfv6c.pdb.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-gd9iutq5jh.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-zuvk8zfv6c.gz
-C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-2ewogjtf8u.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ohj5evtokl.wasm
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.0v2t9thiot.pdb
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.ohj5evtokl.wasm.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\bin\Debug\net9.0\wwwroot\_framework\MyDotNetApp.BlazorClient.0v2t9thiot.pdb.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\njot805917-ohj5evtokl.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\6zl8olme38-0v2t9thiot.gz
+C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\obj\Debug\net9.0\compressed\q47m4pspys-f7uilyzjes.gz
