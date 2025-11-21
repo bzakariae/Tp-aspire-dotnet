@@ -1,15 +1,10 @@
 @page "/renter"
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "ROLE_RENTAL_CUSTOMER")]
-
-
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
-
 @inject HttpClient Http
-@inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
-@inject NotificationService NotificationService
+@inject IJSRuntime JS
 <CascadingAuthenticationState>
 <div class="renter-navbar">
     <div class="navbar-container">
@@ -1200,248 +1195,192 @@
 </style>
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> AuthStateTask { get; set; } = default!;
+    [CascadingParameter] private Task<AuthenticationState> AuthStateTask { get; set; } = default!;
 
-    private List<Car> availableCars = new();
-    private List<Rental> myRentals = new();
-    private bool isLoading = true;
-    private string activeTab = "cars";
-    private bool showRentalModal = false;
-    private Car? selectedCar;
-    private Rental rentalRequest = new();
-    private DateTime startDate = DateTime.Today.AddDays(1);
-    private DateTime endDate = DateTime.Today.AddDays(2);
-    private decimal estimatedPrice = 0;
-    private int estimatedDays = 0;
-    private bool isSubmitting = false;
-    private string? rentalError;
-    private string? rentalSuccess;
-    private string userName = string.Empty;
-    private string searchQuery = "";
-    private string filterClass = "";
-    private string firstName= string.Empty;
+    // Champs privés renommés selon convention (_camelCase)
+    private List<Car> _availableCars = new();
+    private List<Rental> _myRentals = new();
+    private bool _isLoading = true;
+    private string _activeTab = "cars";
+    private bool _showRentalModal; // false par défaut implicite
+    private Car? _selectedCar;
+    private Rental _rentalRequest = new();
+    private DateTime _startDate = DateTime.Today.AddDays(1);
+    private DateTime _endDate = DateTime.Today.AddDays(2);
+    private decimal _estimatedPrice; // 0 implicite
+    private int _estimatedDays; // 0 implicite
+    private bool _isSubmitting; // false implicite
+    private string? _rentalError;
+    private string? _rentalSuccess;
+    private string _userName = string.Empty;
+    private string _searchQuery = string.Empty;
+    private string _filterClass = string.Empty;
+    private string _firstName = string.Empty;
 
-    private List<Car> FilteredCars
-    {
-        get
-        {
-            var filtered = availableCars.AsEnumerable();
+    // Propriétés d’accès pour le markup existant (pour éviter de tout réécrire). On pourrait refactor plus tard.
+    private List<Car> availableCars => _availableCars;
+    private List<Rental> myRentals => _myRentals;
+    private bool isLoading => _isLoading;
+    private string activeTab { get => _activeTab; set => _activeTab = value; }
+    private bool showRentalModal => _showRentalModal;
+    private Car? selectedCar => _selectedCar;
+    private Rental rentalRequest => _rentalRequest;
+    private DateTime startDate { get => _startDate; set => _startDate = value; }
+    private DateTime endDate { get => _endDate; set => _endDate = value; }
+    private decimal estimatedPrice => _estimatedPrice;
+    private int estimatedDays => _estimatedDays;
+    private bool isSubmitting => _isSubmitting;
+    private string? rentalError => _rentalError;
+    private string? rentalSuccess => _rentalSuccess;
+    private string userName => _userName;
+    private string searchQuery { get => _searchQuery; set => _searchQuery = value; }
+    private string filterClass { get => _filterClass; set => _filterClass = value; }
 
-            if (!string.IsNullOrWhiteSpace(searchQuery))
-            {
-                filtered = filtered.Where(c =>
-                    c.Make.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    c.Model.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+    private List<Car> FilteredCars {
+        get {
+            var filtered = _availableCars.AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(_searchQuery)) {
+                filtered = filtered.Where(c => c.Make.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) || c.Model.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase));
             }
-
-            if (!string.IsNullOrWhiteSpace(filterClass))
-            {
-                filtered = filtered.Where(c => c.Class == filterClass);
+            if (!string.IsNullOrWhiteSpace(_filterClass)) {
+                filtered = filtered.Where(c => c.Class == _filterClass);
             }
-
             return filtered.ToList();
         }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         var authState = await AuthStateTask;
         var user = authState.User;
-
-        if (user.Identity?.IsAuthenticated == true)
-        {
-           firstName = user.FindFirst(ClaimTypes.GivenName)?.Value 
-                            ?? user.FindFirst("given_name")?.Value;
-           if (!string.IsNullOrWhiteSpace(firstName) )
-           {
-               userName = firstName.Trim();
-           }
-           else
-           {
-               userName =
-                   user.Identity.Name
-                   ?? user.FindFirst("preferred_username")?.Value
-                   ?? user.FindFirst(ClaimTypes.Email)?.Value
-                   ?? "Utilisateur";
-           }
+        if (user.Identity?.IsAuthenticated == true) {
+            _firstName = (user.FindFirst(ClaimTypes.GivenName)?.Value ?? user.FindFirst("given_name")?.Value) ?? string.Empty;
+            if (!string.IsNullOrWhiteSpace(_firstName)) {
+                _userName = _firstName.Trim();
+            } else {
+                _userName = (user.Identity.Name
+                              ?? user.FindFirst("preferred_username")?.Value
+                              ?? user.FindFirst(ClaimTypes.Email)?.Value
+                              ?? "Utilisateur") ?? string.Empty;
+            }
         }
-
         await LoadData();
     }
 
-
-
-    private async Task LoadData()
-    {
-        isLoading = true;
-        try
-        {
-            availableCars = await Http.GetFromJsonAsync<List<Car>>("api/renter/cars") ?? new();
-            myRentals = await Http.GetFromJsonAsync<List<Rental>>("api/renter/myrentals") ?? new();
-        }
-        catch (Exception ex)
-        {
+    private async Task LoadData() {
+        _isLoading = true;
+        try {
+            _availableCars = await Http.GetFromJsonAsync<List<Car>>("api/renter/cars") ?? new();
+            _myRentals = await Http.GetFromJsonAsync<List<Rental>>("api/renter/myrentals") ?? new();
+        } catch (Exception ex) {
             Console.WriteLine($"Error loading data: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
+        } finally {
+            _isLoading = false;
         }
     }
 
-    private string GetUserInitials()
-    {
-        if (string.IsNullOrEmpty(userName)) return "U";
-        var parts = userName.Split(' ');
-        if (parts.Length >= 2)
-            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
-        return userName.Substring(0, Math.Min(2, userName.Length)).ToUpper();
+    private string GetUserInitials() {
+        if (string.IsNullOrEmpty(_userName)) return "U";
+        var parts = _userName.Split(' ');
+        if (parts.Length >= 2) return ($"{parts[0][0]}{parts[1][0]}").ToUpper();
+        return _userName.Substring(0, Math.Min(2, _userName.Length)).ToUpper();
     }
 
-    private void ShowRentalModal(Car car)
-    {
-        selectedCar = car;
-        rentalRequest = new Rental
-        {
+    private void ShowRentalModal(Car car) {
+        _selectedCar = car;
+        _rentalRequest = new Rental {
             CarId = car.Id,
-            RenterName = userName ?? "",
-            StartDate = DateOnly.FromDateTime(startDate),
-            EndDate = DateOnly.FromDateTime(endDate)
+            RenterName = _userName, // _userName non null
+            StartDate = DateOnly.FromDateTime(_startDate),
+            EndDate   = DateOnly.FromDateTime(_endDate)
         };
         CalculatePrice();
-        showRentalModal = true;
-        rentalError = null;
-        rentalSuccess = null;
+        _showRentalModal = true;
+        _rentalError = null;
+        _rentalSuccess = null;
     }
 
-    private void CloseRentalModal()
-    {
-        showRentalModal = false;
-        selectedCar = null;
-        rentalError = null;
-        rentalSuccess = null;
+    private void CloseRentalModal() {
+        _showRentalModal = false;
+        _selectedCar = null;
+        _rentalError = null;
+        _rentalSuccess = null;
     }
 
-    private void CalculatePrice()
-    {
-        if (selectedCar != null && endDate > startDate)
-        {
-            estimatedDays = (endDate - startDate).Days;
-            estimatedPrice = selectedCar.PricePerDay * estimatedDays;
-        }
-        else
-        {
-            estimatedDays = 0;
-            estimatedPrice = 0;
+    private void CalculatePrice() {
+        if (_selectedCar != null && _endDate > _startDate) {
+            _estimatedDays = (_endDate - _startDate).Days;
+            _estimatedPrice = _selectedCar.PricePerDay * _estimatedDays;
+        } else {
+            _estimatedDays = 0;
+            _estimatedPrice = 0;
         }
     }
 
-    private async Task SubmitRental()
-    {
-        if (selectedCar == null) return;
-
-        rentalError = null;
-        rentalSuccess = null;
-        isSubmitting = true;
-
-        try
-        {
-            rentalRequest.StartDate = DateOnly.FromDateTime(startDate);
-            rentalRequest.EndDate = DateOnly.FromDateTime(endDate);
-
-            if (rentalRequest.EndDate <= rentalRequest.StartDate)
-            {
-                rentalError = "La date de fin doit être après la date de début";
-                isSubmitting = false;
+    private async Task SubmitRental() {
+        if (_selectedCar == null) return;
+        _rentalError = null;
+        _rentalSuccess = null;
+        _isSubmitting = true;
+        try {
+            _rentalRequest.StartDate = DateOnly.FromDateTime(_startDate);
+            _rentalRequest.EndDate   = DateOnly.FromDateTime(_endDate);
+            if (_rentalRequest.EndDate <= _rentalRequest.StartDate) {
+                _rentalError = "La date de fin doit être après la date de début";
+                _isSubmitting = false;
                 return;
             }
-
-            var response = await Http.PostAsJsonAsync("api/renter/rent", rentalRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                rentalSuccess = "Réservation confirmée avec succès !";
+            var response = await Http.PostAsJsonAsync("api/renter/rent", _rentalRequest);
+            if (response.IsSuccessStatusCode) {
+                _rentalSuccess = "Réservation confirmée avec succès !";
                 await Task.Delay(1500);
                 await LoadData();
                 CloseRentalModal();
-                activeTab = "rentals";
+                _activeTab = "rentals";
+            } else {
+                _rentalError = "Une erreur est survenue lors de la réservation";
             }
-            else
-            {
-                rentalError = "Une erreur est survenue lors de la réservation";
-            }
-        }
-        catch (Exception ex)
-        {
-            rentalError = "Une erreur est survenue lors de la réservation";
+        } catch (Exception ex) {
+            _rentalError = "Une erreur est survenue lors de la réservation";
             Console.WriteLine($"Rental exception: {ex.Message}");
-        }
-        finally
-        {
-            isSubmitting = false;
+        } finally {
+            _isSubmitting = false;
         }
     }
 
-    private int GetRentalDuration(Rental rental)
-    {
-        return (rental.EndDate.ToDateTime(new TimeOnly(0,0)) - rental.StartDate.ToDateTime(new TimeOnly(0,0))).Days;
-    }
+    private int GetRentalDuration(Rental rental) => (rental.EndDate.ToDateTime(new TimeOnly(0,0)) - rental.StartDate.ToDateTime(new TimeOnly(0,0))).Days;
 
-    private string GetStatusText(RentalStatus status)
-    {
-        return status switch
-        {
-            RentalStatus.Pending => "En attente",
-            RentalStatus.Approved => "Approuvée",
-            RentalStatus.Rejected => "Refusée",
-            _ => "Inconnu"
-        };
-    }
+    private string GetStatusText(RentalStatus status) => status switch {
+        RentalStatus.Pending => "En attente",
+        RentalStatus.Approved => "Approuvée",
+        RentalStatus.Rejected => "Refusée",
+        _ => "Inconnu"
+    };
 
-    private async Task DownloadDocuments(int rentalId)
-    {
-        try
-        {
+    private async Task DownloadDocuments(int rentalId) {
+        try {
             var documents = await Http.GetFromJsonAsync<List<RentalDocument>>($"api/renter/rentals/{rentalId}/documents");
-            
-            if (documents != null && documents.Count > 0)
-            {
-                foreach (var doc in documents)
-                {
-                    if (!string.IsNullOrEmpty(doc.FileContent))
-                    {
+            if (documents is { Count: >0 }) {
+                foreach (var doc in documents) {
+                    if (!string.IsNullOrEmpty(doc.FileContent)) {
                         var bytes = Convert.FromBase64String(doc.FileContent);
                         var content = System.Text.Encoding.UTF8.GetString(bytes);
-                        
-                        await JSRuntime.InvokeVoidAsync("downloadFile", doc.FileName, content);
+                        await JS.InvokeVoidAsync("downloadFile", doc.FileName, content);
                     }
                 }
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Console.WriteLine($"Error downloading documents: {ex.Message}");
         }
     }
 
     [Inject] KeycloakAuthService Auth { get; set; } = default!;
-    [Inject] IJSRuntime JS { get; set; } = default!;
 
-    private async Task HandleLogout()
-    {
-        if (await JS.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?"))
+    private async Task HandleLogout() {
+        if (await JS.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir vous déconnecter ?")) {
             await Auth.LogoutAsync();
+        }
     }
 
-
-    private void HandleImageError(ErrorEventArgs e)
-    {
-        Console.WriteLine($"Image failed to load: {e}");
-    }
-
-    private bool IsValidImageUrl(string? url)
-    {
-        return !string.IsNullOrEmpty(url) && (url.StartsWith("http://") || url.StartsWith("https://") || url.StartsWith("/"));
-    }
+    private bool IsValidImageUrl(string? url) => !string.IsNullOrEmpty(url) && (url.StartsWith("http://") || url.StartsWith("https://") || url.StartsWith("/"));
 }
+
