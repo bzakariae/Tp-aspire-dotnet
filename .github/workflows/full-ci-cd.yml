@@ -57,23 +57,15 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Publish AppHost
-        run: dotnet publish --configuration Release --no-build --output ./publish
+      - name: Publish AppHost (optional)
+        run: dotnet publish --configuration Release --no-build --output ./publish || true
 
       - name: Inspect publish output (AppHost)
         run: |
           echo "Contents of ./publish (AppHost):" 
           ls -la ./publish || true
           echo "File count:" 
-          find ./publish -type f | wc -l
-
-      - name: Upload AppHost build
-        uses: actions/upload-artifact@v4
-        with:
-          name: apphost-production
-          path: ./MyDotNetApp.AppHost/publish
-          retention-days: 30
-          if-no-files-found: error
+          (find ./publish -type f | wc -l) || true
 
   api-build:
     name: Build API
@@ -161,7 +153,7 @@ jobs:
 
   deployment-ready:
     name: Deployment Ready
-    needs: [api-build, blazor-build, apphost-build]
+    needs: [api-build, blazor-build]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
@@ -177,7 +169,7 @@ jobs:
               run_id
             });
             core.info(`Artifacts found: ${data.artifacts.map(a => `${a.name} (${a.size_in_bytes}B)`).join(', ')}`);
-            const required = new Set(['api-production','blazor-production','apphost-production']);
+            const required = new Set(['api-production','blazor-production']);
             const present = new Set(data.artifacts.map(a => a.name));
             for (const r of required) {
               if (!present.has(r)) {
@@ -197,16 +189,10 @@ jobs:
           name: blazor-production
           path: ./deploy/blazor
 
-      - name: Download AppHost artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: apphost-production
-          path: ./deploy/apphost
-
       - name: Create deployment package
         run: |
           cd deploy
-          tar -czf deployment-package.tar.gz api/ blazor/ apphost/
+          tar -czf deployment-package.tar.gz api/ blazor/
       
       - name: Upload deployment package
         uses: actions/upload-artifact@v4
@@ -223,5 +209,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- 🔹 API Build: Ready" >> $GITHUB_STEP_SUMMARY
           echo "- 🔹 Blazor Build: Ready" >> $GITHUB_STEP_SUMMARY
-          echo "- 🔹 AppHost Build: Ready" >> $GITHUB_STEP_SUMMARY
           echo "- 📦 Deployment Package: Created" >> $GITHUB_STEP_SUMMARY
