@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: api-production
-          path: MyDotNetApp.ApiService/publish/
+          path: ./publish
           retention-days: 30
 
   blazor-build:
@@ -128,7 +128,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: blazor-production
-          path: MyDotNetApp.BlazorClient/publish/wwwroot/
+          path: ./publish/wwwroot
           retention-days: 30
 
   deployment-ready:
