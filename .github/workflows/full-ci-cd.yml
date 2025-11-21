@@ -2,7 +2,7 @@ name: Full CI/CD - API + Blazor
 
 on:
   push:
-    branches: [ main]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -10,125 +10,105 @@ jobs:
   service-defaults-build:
     name: Build ServiceDefaults
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./MyDotNetApp.ServiceDefaults
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
       - name: Restore dependencies
         run: dotnet restore
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
   apphost-build:
     name: Build AppHost
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./MyDotNetApp.AppHost
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
       - name: Restore dependencies
         run: dotnet restore
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
-
       - name: Publish AppHost
-        run: dotnet publish --configuration Release --no-build --output ./publish
-
+        run: |
+          dotnet publish --configuration Release --output ./publish
+          ls -R ./publish
       - name: Upload AppHost build
         uses: actions/upload-artifact@v4
         with:
           name: apphost-production
-          path: MyDotNetApp.AppHost/publish/
+          path: ./publish
           retention-days: 30
 
   api-build:
     name: Build API
     needs: [service-defaults-build]
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./MyDotNetApp.ApiService
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
       - name: Restore dependencies
         run: dotnet restore
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
-
       - name: Publish API
-        run: dotnet publish --configuration Release --no-build --output ./publish
-
+        run: |
+          dotnet publish --configuration Release --output ./publish
+          ls -R ./publish
       - name: Upload API build
         uses: actions/upload-artifact@v4
         with:
           name: api-production
-          path: MyDotNetApp.ApiService/publish/
+          path: ./publish
           retention-days: 30
 
   blazor-build:
     name: Build Blazor
     needs: [service-defaults-build]
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./MyDotNetApp.BlazorClient
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
       - name: Restore dependencies
         run: dotnet restore
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
-
       - name: Publish Blazor WASM
-        run: dotnet publish --configuration Release --no-build --output ./publish
-
+        run: |
+          dotnet publish --configuration Release --output ./publish
+          ls -R ./publish
       - name: Upload Blazor build
         uses: actions/upload-artifact@v4
         with:
           name: blazor-production
-          path: MyDotNetApp.BlazorClient/publish/wwwroot/
+          path: ./publish/wwwroot
           retention-days: 30
 
   deployment-ready:
@@ -136,26 +116,22 @@ jobs:
     needs: [api-build, blazor-build, apphost-build]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
     steps:
       - name: Download API artifact
         uses: actions/download-artifact@v4
         with:
           name: api-production
           path: ./deploy/api
-
       - name: Download Blazor artifact
         uses: actions/download-artifact@v4
         with:
           name: blazor-production
           path: ./deploy/blazor
-
       - name: Download AppHost artifact
         uses: actions/download-artifact@v4
         with:
           name: apphost-production
           path: ./deploy/apphost
-
       - name: Create deployment package
         run: |
           cd deploy
@@ -166,7 +142,6 @@ jobs:
           name: full-deployment-package
           path: deploy/deployment-package.tar.gz
           retention-days: 30
-
       - name: Deployment summary
         run: |
           echo "### ✅ Deployment Ready" >> $GITHUB_STEP_SUMMARY
