@@ -34,6 +34,7 @@ jobs:
         run: dotnet format --verbosity minimal
 
       - name: Detect formatting changes
+        id: format_check
         run: |
           git status --short
           if git diff --quiet; then
@@ -44,14 +45,13 @@ jobs:
             git diff > format.patch
             echo "needs_format=true" >> $GITHUB_OUTPUT
           fi
-        id: format_check
 
       - name: Upload formatting patch (if needed)
         if: steps.format_check.outputs.needs_format == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: api-format-patch
-          path: format.patch
+          path: ./MyDotNetApp.ApiService/format.patch
           retention-days: 7
 
       - name: Build with warnings as errors
@@ -89,6 +89,7 @@ jobs:
         run: dotnet format --verbosity minimal
 
       - name: Detect formatting changes
+        id: format_check
         run: |
           git status --short
           if git diff --quiet; then
@@ -99,14 +100,13 @@ jobs:
             git diff > format.patch
             echo "needs_format=true" >> $GITHUB_OUTPUT
           fi
-        id: format_check
 
       - name: Upload formatting patch (if needed)
         if: steps.format_check.outputs.needs_format == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: blazor-format-patch
-          path: format.patch
+          path: ./MyDotNetApp.BlazorClient/format.patch
           retention-days: 7
 
       - name: Build with warnings as errors
