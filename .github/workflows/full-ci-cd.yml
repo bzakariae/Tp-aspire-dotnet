@@ -44,13 +44,38 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Publish AppHost
         run: |
-          dotnet publish --configuration Release --output ./publish
+          dotnet publish ./MyDotNetApp.AppHost/MyDotNetApp.AppHost.csproj --configuration Release --output ./publish
           ls -R ./publish
+
       - name: Upload AppHost build
         uses: actions/upload-artifact@v4
         with:
           name: apphost-production
           path: ./publish
+          retention-days: 30
+
+      - name: Publish API
+        run: |
+          dotnet publish ./MyDotNetApp.ApiService/MyDotNetApp.ApiService.csproj --configuration Release --output ./publish
+          ls -R ./publish
+
+      - name: Upload API build
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-production
+          path: ./publish
+          retention-days: 30
+
+      - name: Publish Blazor WASM
+        run: |
+          dotnet publish ./MyDotNetApp.BlazorClient/MyDotNetApp.BlazorClient.csproj --configuration Release --output ./publish
+          ls -R ./publish
+
+      - name: Upload Blazor build
+        uses: actions/upload-artifact@v4
+        with:
+          name: blazor-production
+          path: ./publish/wwwroot
           retention-days: 30
 
   api-build:
