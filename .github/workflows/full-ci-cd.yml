@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   service-defaults-build:
     name: Build ServiceDefaults
@@ -56,12 +60,20 @@ jobs:
       - name: Publish AppHost
         run: dotnet publish --configuration Release --no-build --output ./publish
 
+      - name: Inspect publish output (AppHost)
+        run: |
+          echo "Contents of ./publish (AppHost):" 
+          ls -la ./publish || true
+          echo "File count:" 
+          find ./publish -type f | wc -l
+
       - name: Upload AppHost build
         uses: actions/upload-artifact@v4
         with:
           name: apphost-production
-          path: ./publish
+          path: ./MyDotNetApp.AppHost/publish
           retention-days: 30
+          if-no-files-found: error
 
   api-build:
     name: Build API
@@ -90,12 +102,20 @@ jobs:
       - name: Publish API
         run: dotnet publish --configuration Release --no-build --output ./publish
 
+      - name: Inspect publish output (API)
+        run: |
+          echo "Contents of ./publish (API):" 
+          ls -la ./publish || true
+          echo "File count:" 
+          find ./publish -type f | wc -l
+
       - name: Upload API build
         uses: actions/upload-artifact@v4
         with:
           name: api-production
-          path: ./publish
+          path: ./MyDotNetApp.ApiService/publish
           retention-days: 30
+          if-no-files-found: error
 
   blazor-build:
     name: Build Blazor
@@ -124,12 +144,20 @@ jobs:
       - name: Publish Blazor WASM
         run: dotnet publish --configuration Release --no-build --output ./publish
 
+      - name: Inspect publish output (Blazor)
+        run: |
+          echo "Contents of ./publish/wwwroot (Blazor):" 
+          ls -la ./publish/wwwroot || true
+          echo "File count:" 
+          find ./publish/wwwroot -type f | wc -l
+
       - name: Upload Blazor build
         uses: actions/upload-artifact@v4
         with:
           name: blazor-production
-          path: ./publish/wwwroot
+          path: ./MyDotNetApp.BlazorClient/publish/wwwroot
           retention-days: 30
+          if-no-files-found: error
 
   deployment-ready:
     name: Deployment Ready
@@ -138,6 +166,25 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
+      - name: List artifacts in this run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run_id = context.runId;
+            const { data } = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id
+            });
+            core.info(`Artifacts found: ${data.artifacts.map(a => `${a.name} (${a.size_in_bytes}B)`).join(', ')}`);
+            const required = new Set(['api-production','blazor-production','apphost-production']);
+            const present = new Set(data.artifacts.map(a => a.name));
+            for (const r of required) {
+              if (!present.has(r)) {
+                core.setFailed(`Missing required artifact: ${r}`);
+              }
+            }
+
       - name: Download API artifact
         uses: actions/download-artifact@v4
         with:
@@ -160,6 +207,7 @@ jobs:
         run: |
           cd deploy
           tar -czf deployment-package.tar.gz api/ blazor/ apphost/
+      
       - name: Upload deployment package
         uses: actions/upload-artifact@v4
         with:
