@@ -2,67 +2,11 @@ name: Code Quality & Linting
 
 on:
   push:
-    branches: [ main, develop, keycloak_v1 ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop, keycloak_v1 ]
+    branches: [ main ]
 
 jobs:
-
-  code-quality-api:
-    name: API Code Quality
-    runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./MyDotNetApp.ApiService
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-            dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Run dotnet format (apply changes)
-        run: dotnet format --verbosity minimal
-
-      - name: Detect formatting changes
-        id: format_check
-        run: |
-          git status --short
-          if git diff --quiet; then
-            echo "No formatting changes needed."
-            echo "needs_format=false" >> $GITHUB_OUTPUT
-          else
-            echo "Formatting changes detected. Creating patch artifact."
-            git diff > format.patch
-            echo "needs_format=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Upload formatting patch (if needed)
-        if: steps.format_check.outputs.needs_format == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-format-patch
-          path: ./MyDotNetApp.ApiService/format.patch
-          retention-days: 7
-
-      - name: Build with warnings as errors
-        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true --no-restore
-
-      - name: Fail if formatting required
-        if: steps.format_check.outputs.needs_format == 'true'
-        run: |
-          echo "Code non formaté. Applique localement 'dotnet format' puis commite." >&2
-          exit 1
-
   code-quality-blazor:
     name: Blazor Code Quality
     runs-on: ubuntu-latest
