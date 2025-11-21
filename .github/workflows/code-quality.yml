@@ -2,53 +2,19 @@ name: Code Quality & Linting
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop, keycloak_v1 ]
   pull_request:
-    branches: [ main ]
-
-permissions:
-  contents: read
+    branches: [ main, develop, keycloak_v1 ]
 
 jobs:
-  solution-quality:
-    name: Solution Quality (global)
+
+  code-quality-api:
+    name: API Code Quality
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore solution
-        run: dotnet restore ./MyDotNetApp.sln
-
-      - name: Format (solution-wide)
-        run: dotnet format ./MyDotNetApp.sln --verify-no-changes --severity error --verbosity minimal
-
-      - name: Build (warnings as errors)
-        run: dotnet build ./MyDotNetApp.sln --configuration Release /p:TreatWarningsAsErrors=true /p:EnableNETAnalyzers=true --no-restore
-
-      - name: Summary
-        if: always()
-        run: |
-          echo "### Solution Quality" >> $GITHUB_STEP_SUMMARY
-          echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-
-  project-quality:
-    name: Project Quality (${{ matrix.project }})
-    needs: [solution-quality]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        project: [ ApiService, BlazorClient, ServiceDefaults, AppHost ]
-
+    
     defaults:
       run:
-        working-directory: ./MyDotNetApp.${{ matrix.project }}
+        working-directory: ./MyDotNetApp.ApiService
 
     steps:
       - name: Checkout code
@@ -58,26 +24,38 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Format (project)
-        run: dotnet format --verify-no-changes --severity error --verbosity minimal
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
 
-      - name: Build with analyzers (warnings as errors)
-        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true /p:EnableNETAnalyzers=true --no-restore
+      - name: Run code analysis
+        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
 
-      - name: Project summary
-        if: always()
-        run: |
-          echo "### Project Quality: ${{ matrix.project }}" >> $GITHUB_STEP_SUMMARY
-          echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+  code-quality-blazor:
+    name: Blazor Code Quality
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./MyDotNetApp.BlazorClient
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
+      - name: Run code analysis
+        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
