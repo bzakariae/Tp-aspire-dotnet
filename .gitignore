@@ -1,0 +1,21 @@
+# Dossiers .NET générés
+bin/
+obj/
+
+# Dossier virtuel Python
+.venv/
+*.pyc
+*.pyo
+
+# Fichiers utilisateur / IDE
+*.user
+*.suo
+*.pdb
+*.dll
+*.exe
+.idea/
+*.vs/
+
+# Autres fichiers temporaires
+*.log
+*.cache
