@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: apphost-production
-          path: MyDotNetApp.AppHost/publish/
+          path: ./publish
           retention-days: 30
 
   api-build:
