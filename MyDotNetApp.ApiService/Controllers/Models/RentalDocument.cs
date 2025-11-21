@@ -8,11 +8,11 @@ namespace MyDotNetApp.ApiService.Controllers.Models
 
         [Required]
         public int RentalId { get; set; }
-        
+
         public Rental? Rental { get; set; }
 
         [Required]
-        public string DocumentType { get; set; } = ""; 
+        public string DocumentType { get; set; } = "";
 
         [Required]
         public string FileName { get; set; } = "";

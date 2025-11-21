@@ -129,8 +129,8 @@ namespace MyDotNetApp.ApiService.Controllers.Admin
 
             return Ok(stats);
         }
-        
-       
+
+
         [HttpPost("{id}/reject")]
         public async Task<IActionResult> RejectRental(int id, [FromBody] RejectRequest request)
         {

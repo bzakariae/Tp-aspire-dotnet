@@ -16,7 +16,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
         [Required]
         public string Role { get; set; } = "client";
 
-        public string KeycloakId { get; set; } = ""; 
+        public string KeycloakId { get; set; } = "";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

@@ -15,5 +15,5 @@ public class MyDotNetApp_BlazorClient : global::Aspire.Hosting.IProjectMetadata
     /// <summary>
     /// The path to the MyDotNetApp_BlazorClient project.
     /// </summary>
-    public string ProjectPath => """C:\Users\Lenovo\OneDrive\Desktop\M2_Cyber\S1_Cyber\microsoft\Tp-asire\MyDotNetApp\MyDotNetApp.BlazorClient\MyDotNetApp.BlazorClient.csproj""";
+    public string ProjectPath => """C:\Users\User1\Tp-aspire-dotnet\MyDotNetApp.BlazorClient\MyDotNetApp.BlazorClient.csproj""";
 }

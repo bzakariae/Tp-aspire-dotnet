@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {}
+    "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {
+    "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
+        "projectUniqueName": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
         "projectName": "MyDotNetApp.AppHost",
-        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.AppHost\\obj\\",
+        "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.AppHost\\MyDotNetApp.AppHost.csproj",
+        "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.AppHost\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -102,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

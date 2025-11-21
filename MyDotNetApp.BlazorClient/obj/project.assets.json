@@ -622,7 +622,7 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/9.0.9": {
+      "Microsoft.NET.ILLink.Tasks/9.0.11": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
@@ -1290,7 +1290,7 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/9.0.9": {
+      "Microsoft.NET.ILLink.Tasks/9.0.11": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
@@ -2382,10 +2382,10 @@
         "microsoft.jsinterop.webassembly.nuspec"
       ]
     },
-    "Microsoft.NET.ILLink.Tasks/9.0.9": {
-      "sha512": "cHi1os/s6aobEgNkbOh/jW+ru//rHuedvj4PmTh2mMY7et/mJjqphBeXeKCesDvMd0+E2JyX9EPZZC4VRKslXg==",
+    "Microsoft.NET.ILLink.Tasks/9.0.11": {
+      "sha512": "vvB9rtDmWaXgYkViT00KORBVmA3pcYsHlgd9vOPqL9sf5bKy3rvLMF1+sI1uUfVj28S3itirHlHmX5/kcpZKNw==",
       "type": "package",
-      "path": "microsoft.net.illink.tasks/9.0.9",
+      "path": "microsoft.net.illink.tasks/9.0.11",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2399,7 +2399,7 @@
         "build/Microsoft.NET.ILLink.Analyzers.props",
         "build/Microsoft.NET.ILLink.Tasks.props",
         "build/Microsoft.NET.ILLink.targets",
-        "microsoft.net.illink.tasks.9.0.9.nupkg.sha512",
+        "microsoft.net.illink.tasks.9.0.11.nupkg.sha512",
         "microsoft.net.illink.tasks.nuspec",
         "tools/net472/ILLink.Tasks.dll",
         "tools/net472/ILLink.Tasks.dll.config",
@@ -2535,32 +2535,31 @@
       "Microsoft.AspNetCore.Components.WebAssembly.Authentication >= 9.0.10",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 9.0.0",
       "Microsoft.Extensions.Http >= 9.0.10",
-      "Microsoft.NET.ILLink.Tasks >= 9.0.9",
+      "Microsoft.NET.ILLink.Tasks >= 9.0.11",
       "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.11",
       "System.IdentityModel.Tokens.Jwt >= 8.14.0",
       "System.Net.Http.Json >= 9.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
+    "C:\\Users\\User1\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
+      "projectUniqueName": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
       "projectName": "MyDotNetApp.BlazorClient",
-      "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
-      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\obj\\",
+      "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
+      "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2609,7 +2608,7 @@
           "Microsoft.NET.ILLink.Tasks": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[9.0.9, )",
+            "version": "[9.0.11, )",
             "autoReferenced": true
           },
           "Microsoft.NET.Sdk.WebAssembly.Pack": {
@@ -2640,7 +2639,7 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.NETCore.App.Ref",
+            "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
             "version": "[9.0.11, 9.0.11]"
           }
         ],
@@ -2649,7 +2648,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

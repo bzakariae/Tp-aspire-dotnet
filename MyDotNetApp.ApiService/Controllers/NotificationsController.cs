@@ -18,7 +18,7 @@ namespace MyDotNetApp.ApiService.Controllers
 
         private async Task<User?> GetCurrentUserAsync()
         {
-            var email = User.FindFirst(ClaimTypes.Email)?.Value 
+            var email = User.FindFirst(ClaimTypes.Email)?.Value
                         ?? User.FindFirst("email")?.Value;
 
             if (string.IsNullOrEmpty(email))

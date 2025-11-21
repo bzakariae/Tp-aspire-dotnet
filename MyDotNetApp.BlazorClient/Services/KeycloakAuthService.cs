@@ -55,7 +55,7 @@ public class KeycloakAuthService
             var content = await response.Content.ReadFromJsonAsync<KeycloakTokenResponse>();
             if (content is null || string.IsNullOrWhiteSpace(content.access_token)) return false;
 
-          
+
             await _storage.SetItemAsStringAsync(AccessTokenKey, content.access_token);
             if (!string.IsNullOrWhiteSpace(content.refresh_token))
                 await _storage.SetItemAsStringAsync(RefreshTokenKey, content.refresh_token);
@@ -73,14 +73,14 @@ public class KeycloakAuthService
 
     public async Task LogoutAsync()
     {
-        
+
         var idToken = await _storage.GetItemAsStringAsync(IdTokenKey);
         await _storage.RemoveItemAsync(AccessTokenKey);
         await _storage.RemoveItemAsync(RefreshTokenKey);
         await _storage.RemoveItemAsync(IdTokenKey);
         await _authStateProvider.MarkUserAsLoggedOutAsync();
 
-        
+
         var postLogout = _nav.BaseUri.TrimEnd('/');
         var url = $"{Authority}/protocol/openid-connect/logout" +
                   (string.IsNullOrEmpty(idToken) ? "" : $"?id_token_hint={Uri.EscapeDataString(idToken)}") +

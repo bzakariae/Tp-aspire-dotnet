@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj": {}
+    "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj": {
+    "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
+        "projectUniqueName": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
         "projectName": "MyDotNetApp.BlazorClient",
-        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\M2_Cyber\\S1_Cyber\\microsoft\\Tp-asire\\MyDotNetApp\\MyDotNetApp.BlazorClient\\obj\\",
+        "projectPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\MyDotNetApp.BlazorClient.csproj",
+        "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User1\\Tp-aspire-dotnet\\MyDotNetApp.BlazorClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,7 +68,7 @@
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.9, )",
+              "version": "[9.0.11, )",
               "autoReferenced": true
             },
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
@@ -100,7 +99,7 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.NETCore.App.Ref",
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
               "version": "[9.0.11, 9.0.11]"
             }
           ],
@@ -109,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

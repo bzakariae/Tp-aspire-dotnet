@@ -23,10 +23,10 @@ public class KeycloakAdminService
     {
         return await CreateUserWithRoleAsync(email, firstName, lastName, password, "ROLE_RENTAL_CUSTOMER");
     }
-    public async Task<string> CreateUserWithRoleAsync(string email, string firstName,string lastName, string password,string roleName)
+    public async Task<string> CreateUserWithRoleAsync(string email, string firstName, string lastName, string password, string roleName)
     {
-        var baseUrl = _config["Keycloak:BaseUrl"];   
-        var realm   = _config["Keycloak:Realm"];     
+        var baseUrl = _config["Keycloak:BaseUrl"];
+        var realm = _config["Keycloak:Realm"];
 
         var token = await GetAdminTokenAsync();
 
@@ -37,7 +37,7 @@ public class KeycloakAdminService
         {
             username = email,
             email = email,
-            emailVerified = true,  
+            emailVerified = true,
             enabled = true,
             firstName = firstName,
             lastName = lastName,
@@ -49,7 +49,7 @@ public class KeycloakAdminService
 
         if (resp.StatusCode == System.Net.HttpStatusCode.Conflict)
         {
-           
+
             throw new InvalidOperationException("Cet utilisateur existe déjà dans Keycloak.");
         }
 
@@ -77,8 +77,8 @@ public class KeycloakAdminService
     private async Task<string> GetAdminTokenAsync()
     {
         var baseUrl = _config["Keycloak:BaseUrl"];
-        var realm   = _config["Keycloak:Realm"];
-        var clientId     = _config["Keycloak:AdminClientId"];
+        var realm = _config["Keycloak:Realm"];
+        var clientId = _config["Keycloak:AdminClientId"];
         var clientSecret = _config["Keycloak:AdminClientSecret"];
 
         var data = new Dictionary<string, string>
@@ -100,20 +100,20 @@ public class KeycloakAdminService
     public async Task AssignRealmRoleAsync(string userId, string roleName)
     {
         var baseUrl = _config["Keycloak:BaseUrl"];
-        var realm   = _config["Keycloak:Realm"];
-        var token   = await GetAdminTokenAsync();
+        var realm = _config["Keycloak:Realm"];
+        var token = await GetAdminTokenAsync();
 
         _http.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
-        
+
         var roleResp = await _http.GetAsync(
             $"{baseUrl}/admin/realms/{realm}/roles/{roleName}");
         roleResp.EnsureSuccessStatusCode();
 
         var roleJson = await roleResp.Content.ReadAsStringAsync();
 
-        
+
         var body = "[" + roleJson + "]";
 
         var assignResp = await _http.PostAsync(
@@ -124,6 +124,6 @@ public class KeycloakAdminService
     }
 
 
-   
+
 
 }

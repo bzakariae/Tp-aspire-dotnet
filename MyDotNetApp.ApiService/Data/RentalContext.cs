@@ -6,7 +6,7 @@ namespace MyDotNetApp.ApiService.Data
     public class RentalContext : DbContext
     {
         public RentalContext(DbContextOptions<RentalContext> options) : base(options) { }
-        
+
         // DbSets regroupés pour lisibilité
         public DbSet<Car> Cars => Set<Car>();
         public DbSet<Rental> Rentals => Set<Rental>();
@@ -114,8 +114,7 @@ new Car { Id = 64, Make = "Range Rover", Model = "Velar", Class = "SUV", PricePe
 new Car { Id = 65, Make = "Maserati", Model = "Levante Trofeo", Class = "Luxury SUV", PricePerDay = 600m, IsAvailable = true, ImageUrl = "https://www.largus.fr/images/styles/max_1300x1300/public/images/maserati-levante-trofeo-24.jpg?itok=Lr0Hjp4N" },
 new Car { Id = 66, Make = "Mercedes-Benz", Model = "E-Class", Class = "Luxury Sedan", PricePerDay = 350m, IsAvailable = true, ImageUrl = "https://www.mbusa.com/content/dam/mb-nafta/us/myco/my26/e-class/e-sedan/class-page/2026-E-SEDAN-HC-D.jpg" },
 new Car { Id = 67, Make = "BMW", Model = "5 Series", Class = "Luxury Sedan", PricePerDay = 340m, IsAvailable = true, ImageUrl = "https://cdn.motor1.com/images/mgl/KrpgM/s3/2017-bmw-5-series.jpg" },
-new Car { Id = 68, Make = "Audi", Model = "A6", Class = "Luxury Sedan", PricePerDay = 330m, IsAvailable = true, ImageUrl = "https://images.ctfassets.net/uaddx06iwzdz/7aPSWTuHLGAcn6ps5BniGs/aa11e9bf7f6d7d89365f4481522eaa89/audi-a6-front.jpg"
-                }
+new Car { Id = 68, Make = "Audi", Model = "A6", Class = "Luxury Sedan", PricePerDay = 330m, IsAvailable = true, ImageUrl = "https://images.ctfassets.net/uaddx06iwzdz/7aPSWTuHLGAcn6ps5BniGs/aa11e9bf7f6d7d89365f4481522eaa89/audi-a6-front.jpg" }
             );
         }
     }

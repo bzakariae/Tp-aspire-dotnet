@@ -8,12 +8,12 @@ namespace MyDotNetApp.ApiService.Controllers.Models
 
         [Required]
         public int CarId { get; set; }
-        
+
         public Car? Car { get; set; }
 
         [Required]
         public int UserId { get; set; }
-        
+
         public User? User { get; set; }
 
         [Required]

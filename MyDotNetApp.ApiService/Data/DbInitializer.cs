@@ -25,11 +25,11 @@ namespace MyDotNetApp.ApiService.Data
                         email: adminEmail,
                         firstName: "Admin",
                         lastName: "CarRental",
-                        password: "admin-car" 
+                        password: "admin-car"
                     );
                     var admin = new User
                     {
-                        Email =adminEmail,
+                        Email = adminEmail,
                         FullName = "Admin CarRental",
                         Role = "Admin",
                         KeycloakId = keycloakId,

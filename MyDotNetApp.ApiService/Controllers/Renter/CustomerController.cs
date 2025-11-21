@@ -56,7 +56,8 @@ public class CustomerController : ControllerBase
             await _db.SaveChangesAsync();
 
             return Ok(user);
-        }catch (InvalidOperationException ex) when (ex.Message.Contains("Keycloak"))
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("Keycloak"))
         {
             return BadRequest("Cet email est déjà utilisé (Keycloak).");
         }

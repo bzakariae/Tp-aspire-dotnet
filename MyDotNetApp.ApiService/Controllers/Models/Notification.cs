@@ -8,7 +8,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
 
         [Required]
         public int UserId { get; set; }
-        
+
         public User? User { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace MyDotNetApp.ApiService.Controllers.Models
         public bool IsRead { get; set; } = false;
 
         public int? RelatedRentalId { get; set; }
-        
+
         public Rental? RelatedRental { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
