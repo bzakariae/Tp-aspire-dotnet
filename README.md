@@ -43,6 +43,12 @@ Solution `.NET Aspire` composée des projets suivants :
 - **Orchestration locale** : .NET Aspire (AppHost)
 
 ---
+### 🗃️ Modèle Conceptuel de Données (MCD)
+<img width="903" height="668" alt="image" src="https://github.com/user-attachments/assets/7fb6ef2f-cf43-4a54-9c61-e44c5f09dec8" />
+
+---
+
+
 
 ## ✅ Prérequis
 
