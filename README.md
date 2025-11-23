@@ -176,14 +176,29 @@ dotnet run
 
 1. **Accès à l’application**  
    Ouvrir le front Blazor dans le navigateur ( `http://localhost:5150`).
+<img width="1806" height="947" alt="image" src="https://github.com/user-attachments/assets/fded49c4-54d3-4f41-930c-87591c592fe7" />
 
 2. **Création de compte client**  
    - Sur la page d’accueil, remplir le formulaire d’inscription.
+   <img width="1794" height="949" alt="image" src="https://github.com/user-attachments/assets/a57d3c16-42b8-424b-b72c-1ce064c414fd" />
+
    - Une fois inscrit, se connecter pour :
      - parcourir la liste des voitures de luxe,
-     - créer et gérer ses réservations.
+       <img width="1818" height="953" alt="image" src="https://github.com/user-attachments/assets/87161ef4-4351-42bb-b233-2bde804851f0" />
 
-3. **Rôles**  
+     - créer et gérer ses réservations et Télécharger les documents
+       <img width="1515" height="948" alt="image" src="https://github.com/user-attachments/assets/56dc2e04-64e4-4afe-bed3-169d440ccb7c" />
+
+3. **Compte client**
+   -Ajouter/Modifier/Supprimer une voiture
+  <img width="1826" height="946" alt="image" src="https://github.com/user-attachments/assets/240f04cf-99ab-4cf6-92c5-467ef3080484" />
+
+   -Approuver ou Rejeter une resérvation
+   -Créer un nouveau compte Admin
+   -Voir l'historique des réservations
+   
+  
+5. **Rôles**  
    - `ROLE_RENTAL_CUSTOMER` : clients qui réservent les voitures,
    - `ROLE_RENTAL_MANAGER` : gestion de la flotte et des réservations (assignation via Keycloak).
 
